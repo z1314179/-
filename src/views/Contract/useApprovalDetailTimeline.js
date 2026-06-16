@@ -133,6 +133,15 @@ function buildDingApprovalFlow(input, extraUserNameMap = {}, section = 'current'
         statusCode: 2,
       }))
 
+      if (relation && shouldRenderAppendGroup(relation)) {
+        renderAppendGroup(items, relation, userNameMap, section)
+      }
+
+      continue
+    }
+
+    if (record.type === 'PROCESS_CC') {
+      items.push(createProcessCcRecordItem(record, userNameMap, section))
       continue
     }
 
@@ -158,17 +167,12 @@ function buildDingApprovalFlow(input, extraUserNameMap = {}, section = 'current'
     }
   }
 
-  for (const relation of appendRelations) {
-    if (!shouldRenderAppendGroup(relation)) continue
-
-    renderAppendGroup(items, relation, userNameMap, section)
-  }
-
   if (instance.status === 'RUNNING') {
     renderForecastUnfinishedNodes({
       items,
       workflowForecastNodes,
       workflowActivityRules,
+      operationRecords,
       tasks,
       usedTaskIds,
       userNameMap,
@@ -185,10 +189,28 @@ function getExecuteStatusName(appendType) {
   return '审批人'
 }
 
+function createProcessCcRecordItem(record, userNameMap, section) {
+  const ccUserIds = record.ccUserIds || []
+  const displayApprover = ccUserIds
+    .map(userId => `${getName(userId, userNameMap)}（已抄送）`)
+    .join('、')
+
+  return createRecordItem({
+    section,
+    id: record.id || `${record.type}-${record.activityId || ''}-${record.date || ''}`,
+    status: record.showName || '抄送人',
+    displayApprover: displayApprover || '未识别',
+    date: record.date,
+    remark: record.remark || '已抄送',
+    statusCode: 2,
+  })
+}
+
 function renderForecastUnfinishedNodes({
   items,
   workflowForecastNodes,
   workflowActivityRules,
+  operationRecords,
   tasks,
   usedTaskIds,
   userNameMap,
@@ -198,6 +220,13 @@ function renderForecastUnfinishedNodes({
 
   for (const rule of orderedRules) {
     const activityId = rule.activityId
+    const hasProcessCcRecord = operationRecords.some(record => {
+      return record.type === 'PROCESS_CC' && record.activityId === activityId
+    })
+
+    if ((rule?.workflowActor?.actorType === 'notifier' || rule.activityName === '抄送人') && hasProcessCcRecord) {
+      continue
+    }
 
     const nodeTasks = tasks.filter(task => {
       if (task.activityId !== activityId) return false
@@ -312,12 +341,10 @@ function renderNotStartedOriginalNode(items, rule, userNameMap, section) {
   }
 
   if (rule?.workflowActor?.actorType === 'notifier' || activityName === '抄送人') {
-    const status = rule?.isTargetSelect ? '抄送或签审批人' : activityName
-
     items.push(createRecordItem({
       section,
       id: rule.activityId,
-      status,
+      status: activityName,
       displayApprover: personTexts,
       date: '',
       remark: '',
@@ -579,6 +606,12 @@ function buildUserNameMap({
     if (record.userId && !map[record.userId]) {
       map[record.userId] = record.userId
     }
+
+    for (const userId of record.ccUserIds || []) {
+      if (userId && !map[userId]) {
+        map[userId] = userId
+      }
+    }
   }
 
   return map
@@ -684,6 +717,36 @@ function buildTableData(result) {
   return rows
 }
 
+function pickListFromResponse(payload) {
+  if (Array.isArray(payload)) return payload
+  if (Array.isArray(payload?.list)) return payload.list
+  if (Array.isArray(payload?.rows)) return payload.rows
+  if (Array.isArray(payload?.records)) return payload.records
+  return []
+}
+
+async function resolveDingUserNameMap() {
+  try {
+    const res = await getDingUserList({})
+    const payload = res?.data ?? res?.result ?? res
+    const list = pickListFromResponse(payload)
+    const map = {}
+
+    for (const item of list) {
+      const userId = item?.userId ?? item?.userid ?? item?.id
+      const name = item?.name ?? item?.userName ?? item?.username ?? item?.nickName
+      if (userId && name) {
+        map[userId] = name
+      }
+    }
+
+    return map
+  } catch (error) {
+    console.warn('[useApprovalDetailTimeline] getDingUserList failed:', error)
+    return {}
+  }
+}
+
 export { buildDingApprovalFlowWithHistories, buildTableData, buildDingApprovalFlow }
 
 export function useApprovalDetailTimeline() {
@@ -693,7 +756,14 @@ export function useApprovalDetailTimeline() {
   const getApproverDisplay = (record) => record?.displayApprover || ''
 
   const getData = async (input) => {
-    console.log('[useApprovalDetailTimeline] getData input:', input)
+    const nodeData = JSON.parse(JSON.stringify(input || {}))
+    if (!nodeData || typeof nodeData !== 'object') {
+      approvalTableData.value = []
+      return
+    }
+
+    dingUserListRef.value = await resolveDingUserNameMap()
+    approvalTableData.value = buildTableData(buildDingApprovalFlowWithHistories(nodeData, dingUserListRef.value))
   }
 
   return {
