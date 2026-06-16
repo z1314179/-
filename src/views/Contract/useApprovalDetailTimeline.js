@@ -155,8 +155,8 @@ function buildDingApprovalFlow(input, extraUserNameMap = {}, section = 'current'
       items.push(createRecordItem({
         section,
         id: record.id || task.taskId,
-        status: getExecuteStatusName(appendType, record.showName),
-        displayApprover: `${getName(task.userId, userNameMap)}（${getResultText(task)}）`,
+        status: record.showName || '审批人',
+        displayApprover: formatExecuteTaskDisplay(task, appendType, userNameMap),
         date: task.finishTime || record.date,
         remark: record.remark || '',
         statusCode: task.result === 'REFUSE' ? 3 : 2,
@@ -180,15 +180,11 @@ function buildDingApprovalFlow(input, extraUserNameMap = {}, section = 'current'
   return items
 }
 
-function getExecuteStatusName(appendType, showName = '审批人') {
+function formatExecuteTaskDisplay(task, appendType, userNameMap) {
   const appendTypeText = getAppendTypeText(appendType)
-  return appendTypeText ? `${showName}（${appendTypeText}）` : showName
-}
+  const displayName = `${getName(task.userId, userNameMap)}（${getResultText(task)}）`
 
-function getAppendStatusName(record) {
-  const showName = record.showName || '审批人'
-  const appendTypeText = getAppendTypeText(record.type)
-  return appendTypeText ? `${showName}（${appendTypeText}）` : showName
+  return appendTypeText ? `${appendTypeText}：${displayName}` : displayName
 }
 
 function formatAppendRecordDisplay(record, appendTasks, userNameMap) {
@@ -550,8 +546,9 @@ function shouldRenderAppendGroup(relation) {
 
 function renderAppendGroup(items, relation, userNameMap, section) {
   const tasks = relation.groupTasks || relation.tasks || []
-  const status = getAppendStatusName(relation.record)
-  const displayApprover = formatTaskUsersWithResult(tasks, userNameMap, 'OR')
+  const status = relation.record.showName || '审批人'
+  const appendTypeText = getAppendTypeText(relation.record.type)
+  const displayApprover = `${appendTypeText}：${formatTaskUsersWithResult(tasks, userNameMap, 'OR')}`
 
   const statusCode = resolveAppendGroupStatusCode(tasks)
 
