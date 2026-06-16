@@ -14,7 +14,6 @@ defineOptions({ name: 'ApprovalDetailTimeline' })
 import { watch } from 'vue'
 import ApprovalTimelineLine from '@/components/system/ApprovalTimelineLine.vue'
 import { useApprovalDetailTimeline } from '@/views/Contract/useApprovalDetailTimeline'
-import { buildDingApprovalFlowWithHistories } from '@/views/Contract/test copy.js'
 const { approvalTableData, getApproverDisplay, getData } = useApprovalDetailTimeline()
 const props = defineProps({
   workflowForeData: { type: Object, default: () => { } },
@@ -24,7 +23,6 @@ watch(
   () => props.workflowForeData,
   async (v) => {
     if (v && typeof v === 'object' && Object.keys(v).length) {
-      console.log('[test copy]', buildDingApprovalFlowWithHistories(v))
       await getData(v)
     }
   },
