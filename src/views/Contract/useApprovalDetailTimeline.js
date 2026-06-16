@@ -135,6 +135,16 @@ function buildDingApprovalFlow(input, extraUserNameMap = {}, section = 'current'
       continue
     }
 
+    if (record.type === 'REDIRECT_TASK') {
+      items.push(createRedirectTaskRecordItem(record, tasks, userNameMap, section))
+      continue
+    }
+
+    if (record.type === 'REDIRECT_PROCESS') {
+      items.push(createRedirectProcessRecordItem(record, userNameMap, section))
+      continue
+    }
+
     if (record.type === 'EXECUTE_TASK_NORMAL') {
       const task = findExecuteTask(record, tasks)
       const appendType = task ? taskAppendTypeMap.get(task.taskId) : ''
@@ -221,6 +231,58 @@ function createProcessCcRecordItem(record, userNameMap, section) {
     remark: record.remark || '',
     statusCode: 2,
   })
+}
+
+function createRedirectTaskRecordItem(record, tasks, userNameMap, section) {
+  return createRecordItem({
+    section,
+    id: record.id || `${record.type}-${record.activityId || ''}-${record.date || ''}`,
+    status: record.showName || '审批人',
+    displayApprover: formatRedirectTaskDisplay(record, tasks, userNameMap),
+    date: record.date,
+    remark: record.remark || '',
+    statusCode: 2,
+  })
+}
+
+function createRedirectProcessRecordItem(record, userNameMap, section) {
+  return createRecordItem({
+    section,
+    id: record.id || `${record.type}-${record.activityId || ''}-${record.date || ''}`,
+    status: record.showName || '审批人',
+    displayApprover: formatRedirectProcessDisplay(record, userNameMap),
+    date: record.date,
+    remark: record.remark || '',
+    statusCode: getOperationRecordStatusCode(record),
+  })
+}
+
+function formatRedirectTaskDisplay(record, tasks, userNameMap) {
+  const operatorName = getName(record.userId, userNameMap, '未识别')
+  const targetTask = getRedirectTargetTask(record, tasks)
+  const targetName = targetTask ? getName(targetTask.userId, userNameMap, '未识别') : '未识别'
+
+  return `${operatorName} 转交 ${targetName}`
+}
+
+function formatRedirectProcessDisplay(record, userNameMap) {
+  const operatorName = getName(record.userId, userNameMap, '未识别')
+  const typeName = record.showName || record.type || '审批人'
+
+  return `${operatorName} 退回 ${typeName}`
+}
+
+function getRedirectTargetTask(record, tasks) {
+  const candidates = (tasks || []).filter(task => {
+    if (task.activityId !== record.activityId) return false
+    if (task.userId === record.userId) return false
+
+    return formatTime(task.createTime) === formatTime(record.date)
+  })
+
+  return candidates.find(task => task.status !== 'CANCELED')
+    || candidates[0]
+    || null
 }
 
 function createOperationRecordItem(record, userNameMap, section) {
