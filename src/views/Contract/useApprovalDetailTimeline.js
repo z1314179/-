@@ -123,7 +123,7 @@ function buildDingApprovalFlow(input, extraUserNameMap = {}, section = 'current'
       items.push(createRecordItem({
         section,
         id: record.id,
-        status: getAppendStatusName(record),
+        status: record.showName || '审批人',
         displayApprover: formatAppendRecordDisplay(record, appendTasks, userNameMap),
         date: record.date,
         remark: record.remark || '',
