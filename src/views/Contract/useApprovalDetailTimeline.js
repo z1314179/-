@@ -141,7 +141,7 @@ function buildDingApprovalFlow(input, extraUserNameMap = {}, section = 'current'
     }
 
     if (record.type === 'REDIRECT_PROCESS') {
-      items.push(createRedirectProcessRecordItem(record, userNameMap, section))
+      items.push(createRedirectProcessRecordItem(record, tasks, operationRecords, workflowActivityRules, userNameMap, section))
       continue
     }
 
@@ -245,12 +245,12 @@ function createRedirectTaskRecordItem(record, tasks, userNameMap, section) {
   })
 }
 
-function createRedirectProcessRecordItem(record, userNameMap, section) {
+function createRedirectProcessRecordItem(record, tasks, operationRecords, workflowActivityRules, userNameMap, section) {
   return createRecordItem({
     section,
     id: record.id || `${record.type}-${record.activityId || ''}-${record.date || ''}`,
     status: record.showName || '审批人',
-    displayApprover: formatRedirectProcessDisplay(record, userNameMap),
+    displayApprover: formatRedirectProcessDisplay(record, tasks, operationRecords, workflowActivityRules, userNameMap),
     date: record.date,
     remark: record.remark || '',
     statusCode: getOperationRecordStatusCode(record),
@@ -269,9 +269,13 @@ function formatRedirectTaskDisplay(record, tasks, userNameMap) {
   return `${operatorName} 转交 ${targetName}`
 }
 
-function formatRedirectProcessDisplay(record, userNameMap) {
+function formatRedirectProcessDisplay(record, tasks, operationRecords, workflowActivityRules, userNameMap) {
   const operatorName = getName(record.userId, userNameMap, '未识别')
-  const typeName = record.showName || record.type || '审批人'
+  const targetActivityId = getRedirectProcessTargetActivityId(record, tasks)
+  const typeName = getRedirectProcessTargetName(targetActivityId, operationRecords, workflowActivityRules)
+    || record.showName
+    || record.type
+    || '审批人'
 
   return `${operatorName} 退回 ${typeName}`
 }
@@ -413,6 +417,21 @@ function getRedirectProcessTargetActivityId(record, tasks) {
     || candidates[0]
 
   return targetTask?.activityId || ''
+}
+
+function getRedirectProcessTargetName(targetActivityId, operationRecords, workflowActivityRules) {
+  if (!targetActivityId) return ''
+
+  if (targetActivityId === 'sid-startevent') {
+    return getStartProcessRecord(operationRecords)?.showName || ''
+  }
+
+  const targetRule = (workflowActivityRules || []).find(rule => rule.activityId === targetActivityId)
+  return targetRule?.activityName || ''
+}
+
+function getStartProcessRecord(operationRecords) {
+  return (operationRecords || []).find(record => record.type === 'START_PROCESS_INSTANCE')
 }
 
 function getRedirectProcessStartRuleIndex(targetActivityId, workflowForecastNodes, orderedRules) {
