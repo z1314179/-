@@ -385,6 +385,19 @@ function formatTaskUsersWithResult(tasks, userNameMap, method) {
   return `${displayNames} ${getApprovalMethodText(method)}`
 }
 
+function formatAppendGroupUsers(tasks, userNameMap, method, statusCode) {
+  const displayNames = (tasks || [])
+    .map(task => getName(task.userId, userNameMap))
+    .join('、') || '未识别'
+  const methodText = (tasks || []).length > 1 ? ` ${getApprovalMethodText(method)}` : ''
+
+  if (statusCode === 1) {
+    return `${displayNames}（审批中）${methodText}`
+  }
+
+  return formatTaskUsersWithResult(tasks, userNameMap, method)
+}
+
 function getDisplayTasks(tasks, excludeUserId = '') {
   return (tasks || []).filter(task => {
     if (isCanceledPlaceholderTask(task)) return false
@@ -404,6 +417,7 @@ function getNextAppendOperatorUserId(record, operationRecords) {
     .filter(item => {
       if (!isAppendRecord(item)) return false
       if (item.activityId !== record.activityId) return false
+      if (item.userId === record.userId) return false
       return toTime(item.date) > recordTime
     })
     .sort((a, b) => toTime(a.date) - toTime(b.date))[0]
@@ -629,7 +643,7 @@ function shouldRenderAppendGroup(relation) {
   const tasks = relation.groupTasks || relation.tasks || []
   if (tasks.length === 0) return false
 
-  return getDisplayTasks(tasks).some(task => {
+  return getDisplayTasks(tasks, relation.record.userId).some(task => {
     return ['RUNNING', 'NEW', 'PAUSED'].includes(task.status)
   })
 }
@@ -638,9 +652,10 @@ function renderAppendGroup(items, relation, userNameMap, section) {
   const tasks = relation.groupTasks || relation.tasks || []
   const status = relation.record.showName || '审批人'
   const appendTypeText = getAppendTypeText(relation.record.type)
-  const displayApprover = `${appendTypeText}：${formatTaskUsersWithResult(tasks, userNameMap, 'OR')}`
 
-  const statusCode = resolveAppendGroupStatusCode(tasks)
+  const displayTasks = getDisplayTasks(tasks, relation.record.userId)
+  const statusCode = resolveAppendGroupStatusCode(displayTasks)
+  const displayApprover = `${appendTypeText}：${formatAppendGroupUsers(displayTasks, userNameMap, 'OR', statusCode)}`
 
   items.push(createRecordItem({
     section,
