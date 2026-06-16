@@ -335,8 +335,18 @@ function renderForecastUnfinishedNodes({
   section,
 }) {
   const orderedRules = getRulesByForecastOrder(workflowForecastNodes, workflowActivityRules)
+  const redirectState = resolveRedirectProcessForecastState({
+    workflowForecastNodes,
+    orderedRules,
+    operationRecords,
+    tasks,
+  })
+  const forecastRules = orderedRules.slice(redirectState.startIndex)
+  const forecastTasks = redirectState.redirectTime
+    ? tasks.filter(task => toTime(task.createTime) >= redirectState.redirectTime)
+    : tasks
 
-  for (const rule of orderedRules) {
+  for (const rule of forecastRules) {
     const activityId = rule.activityId
     const hasProcessCcRecord = operationRecords.some(record => {
       return record.type === 'PROCESS_CC' && record.activityId === activityId
@@ -346,7 +356,7 @@ function renderForecastUnfinishedNodes({
       continue
     }
 
-    const nodeTasks = normalizePendingNodeTasks(tasks.filter(task => {
+    const nodeTasks = normalizePendingNodeTasks(forecastTasks.filter(task => {
       if (task.activityId !== activityId) return false
       if (usedTaskIds.has(task.taskId)) return false
 
@@ -358,12 +368,69 @@ function renderForecastUnfinishedNodes({
       continue
     }
 
-    const hasAnyTask = tasks.some(task => task.activityId === activityId)
+    const hasAnyTask = forecastTasks.some(task => task.activityId === activityId)
 
     if (!hasAnyTask) {
       renderNotStartedOriginalNode(items, rule, userNameMap, section)
     }
   }
+}
+
+function resolveRedirectProcessForecastState({
+  workflowForecastNodes,
+  orderedRules,
+  operationRecords,
+  tasks,
+}) {
+  const redirectRecord = getLatestRedirectProcessRecord(operationRecords)
+  if (!redirectRecord) {
+    return {
+      startIndex: 0,
+      redirectTime: 0,
+    }
+  }
+
+  const targetActivityId = getRedirectProcessTargetActivityId(redirectRecord, tasks)
+
+  return {
+    startIndex: getRedirectProcessStartRuleIndex(targetActivityId, workflowForecastNodes, orderedRules),
+    redirectTime: toTime(redirectRecord.date),
+  }
+}
+
+function getLatestRedirectProcessRecord(operationRecords) {
+  return (operationRecords || [])
+    .filter(record => record.type === 'REDIRECT_PROCESS')
+    .sort((a, b) => toTime(b.date) - toTime(a.date))[0]
+}
+
+function getRedirectProcessTargetActivityId(record, tasks) {
+  const candidates = (tasks || []).filter(task => {
+    return formatTime(task.createTime) === formatTime(record.date)
+  })
+  const targetTask = candidates.find(task => ['RUNNING', 'NEW', 'PAUSED'].includes(task.status))
+    || candidates.find(task => task.status !== 'CANCELED')
+    || candidates[0]
+
+  return targetTask?.activityId || ''
+}
+
+function getRedirectProcessStartRuleIndex(targetActivityId, workflowForecastNodes, orderedRules) {
+  if (!targetActivityId) return 0
+
+  const directIndex = orderedRules.findIndex(rule => rule.activityId === targetActivityId)
+  if (directIndex >= 0) return directIndex
+
+  const targetForecastIndex = workflowForecastNodes.findIndex(node => node.activityId === targetActivityId)
+  if (targetForecastIndex < 0) return 0
+
+  const nextRuleIndex = orderedRules.findIndex(rule => {
+    const ruleForecastIndex = workflowForecastNodes.findIndex(node => node.activityId === rule.activityId)
+
+    return ruleForecastIndex > targetForecastIndex
+  })
+
+  return nextRuleIndex >= 0 ? nextRuleIndex : orderedRules.length
 }
 
 function renderGeneratedOriginalNode(items, rule, nodeTasks, userNameMap, section) {
