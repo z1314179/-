@@ -10,7 +10,6 @@ function isCurrentProcessHistory(history, currentBusinessId) {
 
   return historyBusinessId == currentBusinessId
 }
-
 function buildDingApprovalFlowWithHistories(input, extraUserNameMap = {}) {
   const historyFlows = []
 
