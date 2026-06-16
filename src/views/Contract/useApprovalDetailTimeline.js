@@ -127,10 +127,6 @@ function buildDingApprovalFlow(input, extraUserNameMap = {}, section = 'current'
         statusCode: 2,
       }))
 
-      if (relation && shouldRenderAppendGroup(relation)) {
-        renderAppendGroup(items, relation, userNameMap, section)
-      }
-
       continue
     }
 
@@ -142,10 +138,6 @@ function buildDingApprovalFlow(input, extraUserNameMap = {}, section = 'current'
     if (record.type === 'EXECUTE_TASK_NORMAL') {
       const task = findExecuteTask(record, tasks)
       if (!task) continue
-
-      if (isInGroupedAppendTask(task, appendRelations)) {
-        continue
-      }
 
       const appendType = taskAppendTypeMap.get(task.taskId)
 
@@ -161,7 +153,15 @@ function buildDingApprovalFlow(input, extraUserNameMap = {}, section = 'current'
     }
   }
 
-  if (instance.status === 'RUNNING') {
+  if (section === 'current') {
+    for (const relation of appendRelations) {
+      if (!shouldRenderAppendGroup(relation)) continue
+
+      renderAppendGroup(items, relation, userNameMap, section)
+    }
+  }
+
+  if (section === 'current' && instance.status === 'RUNNING') {
     renderForecastUnfinishedNodes({
       items,
       workflowForecastNodes,
@@ -244,6 +244,7 @@ function renderForecastUnfinishedNodes({
     const nodeTasks = normalizePendingNodeTasks(tasks.filter(task => {
       if (task.activityId !== activityId) return false
       if (usedTaskIds.has(task.taskId)) return false
+      if (hasExecutedRecordForTask(task, operationRecords)) return false
 
       return ['PAUSED', 'NEW', 'RUNNING'].includes(task.status)
     }))
@@ -408,6 +409,16 @@ function getNextAppendOperatorUserId(record, operationRecords) {
     .sort((a, b) => toTime(a.date) - toTime(b.date))[0]
 
   return nextAppendRecord?.userId || ''
+}
+
+function hasExecutedRecordForTask(task, operationRecords) {
+  return (operationRecords || []).some(record => {
+    if (record.type !== 'EXECUTE_TASK_NORMAL') return false
+    if (record.activityId !== task.activityId) return false
+    if (record.userId !== task.userId) return false
+
+    return toTime(task.createTime) <= toTime(record.date)
+  })
 }
 
 function getRulesByForecastOrder(workflowForecastNodes, workflowActivityRules) {
@@ -618,13 +629,9 @@ function shouldRenderAppendGroup(relation) {
   const tasks = relation.groupTasks || relation.tasks || []
   if (tasks.length === 0) return false
 
-  const hasCanceled = tasks.some(task => task.status === 'CANCELED')
-  const hasRunning = tasks.some(task => task.status === 'RUNNING')
-
-  if (tasks.length > 1 && hasCanceled) return true
-  if (hasRunning) return true
-
-  return false
+  return getDisplayTasks(tasks).some(task => {
+    return ['RUNNING', 'NEW', 'PAUSED'].includes(task.status)
+  })
 }
 
 function renderAppendGroup(items, relation, userNameMap, section) {
@@ -646,15 +653,6 @@ function renderAppendGroup(items, relation, userNameMap, section) {
   }))
 }
 
-function isInGroupedAppendTask(task, appendRelations) {
-  return appendRelations.some(relation => {
-    if (!shouldRenderAppendGroup(relation)) return false
-
-    const tasks = relation.groupTasks || relation.tasks || []
-    return tasks.some(item => item.taskId === task.taskId)
-  })
-}
-
 function findExecuteTask(record, tasks) {
   return tasks.find(task => {
     return task.userId === record.userId
@@ -667,6 +665,7 @@ function findExecuteTask(record, tasks) {
 
 function resolveAppendGroupStatusCode(tasks) {
   if (tasks.some(task => task.status === 'RUNNING')) return 1
+  if (tasks.some(task => ['NEW', 'PAUSED'].includes(task.status))) return 0
   if (tasks.some(task => task.status === 'COMPLETED' && task.result === 'REFUSE')) return 3
   if (tasks.some(task => task.status === 'COMPLETED' && task.result === 'AGREE')) return 2
   return 0
