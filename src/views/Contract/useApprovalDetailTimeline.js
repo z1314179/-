@@ -137,20 +137,21 @@ function buildDingApprovalFlow(input, extraUserNameMap = {}, section = 'current'
 
     if (record.type === 'EXECUTE_TASK_NORMAL') {
       const task = findExecuteTask(record, tasks)
-      if (!task) continue
-
-      const appendType = taskAppendTypeMap.get(task.taskId)
+      const appendType = task ? taskAppendTypeMap.get(task.taskId) : ''
 
       items.push(createRecordItem({
         section,
-        id: record.id || task.taskId,
+        id: record.id || task?.taskId,
         status: getApprovalStatusName(record.showName, appendType),
-        displayApprover: formatExecuteTaskDisplay(task, userNameMap),
-        date: task.finishTime || record.date,
+        displayApprover: task ? formatExecuteTaskDisplay(task, userNameMap) : formatOperationRecordDisplay(record, userNameMap),
+        date: task?.finishTime || record.date,
         remark: record.remark || '',
-        statusCode: task.result === 'REFUSE' ? 3 : 2,
+        statusCode: getOperationRecordStatusCode(record, task),
       }))
+      continue
     }
+
+    items.push(createOperationRecordItem(record, userNameMap, section))
   }
 
   if (section === 'current') {
@@ -220,6 +221,27 @@ function createProcessCcRecordItem(record, userNameMap, section) {
     remark: record.remark || '',
     statusCode: 2,
   })
+}
+
+function createOperationRecordItem(record, userNameMap, section) {
+  return createRecordItem({
+    section,
+    id: record.id || `${record.type || 'operation'}-${record.activityId || ''}-${record.date || ''}`,
+    status: record.showName || record.type || '审批人',
+    displayApprover: formatOperationRecordDisplay(record, userNameMap),
+    date: record.date,
+    remark: record.remark || '',
+    statusCode: getOperationRecordStatusCode(record),
+  })
+}
+
+function formatOperationRecordDisplay(record, userNameMap) {
+  return getName(record.userId, userNameMap, '未识别')
+}
+
+function getOperationRecordStatusCode(record, task) {
+  const result = task?.result || record?.result
+  return result === 'REFUSE' ? 3 : 2
 }
 
 function renderForecastUnfinishedNodes({
