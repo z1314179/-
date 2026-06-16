@@ -194,8 +194,9 @@ function getAppendStatusName(record) {
 function formatAppendRecordDisplay(record, appendTasks, userNameMap) {
   const operatorName = getName(record.userId, userNameMap)
   const appendTypeText = getAppendTypeText(record.type)
-  const appendNames = appendTasks.length > 0
-    ? appendTasks.map(task => getName(task.userId, userNameMap)).join('、')
+  const displayTasks = getDisplayTasks(appendTasks)
+  const appendNames = displayTasks.length > 0
+    ? displayTasks.map(task => getName(task.userId, userNameMap)).join('、')
     : '未识别'
 
   return `${operatorName} ${appendTypeText}：${appendNames}`
@@ -379,13 +380,22 @@ function formatPendingUsers(names, method) {
 }
 
 function formatTaskUsersWithResult(tasks, userNameMap, method) {
-  const displayNames = (tasks || [])
+  const displayTasks = getDisplayTasks(tasks)
+  const displayNames = displayTasks
     .map(task => `${getName(task.userId, userNameMap)}（${getResultText(task)}）`)
     .join('、') || '未识别'
 
-  if ((tasks || []).length <= 1) return displayNames
+  if (displayTasks.length <= 1) return displayNames
 
   return `${displayNames} ${getApprovalMethodText(method)}`
+}
+
+function getDisplayTasks(tasks) {
+  return (tasks || []).filter(task => !isCanceledPlaceholderTask(task))
+}
+
+function isCanceledPlaceholderTask(task) {
+  return task?.status === 'CANCELED' && String(task.userId || '').startsWith('V00_')
 }
 
 function getRulesByForecastOrder(workflowForecastNodes, workflowActivityRules) {
