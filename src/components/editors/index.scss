@@ -1,0 +1,92 @@
+#htmlContent {
+
+  // padding: 16px;
+  p,
+  span,
+  div,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    margin     : 0;
+    line-height: normal;
+    padding    : 0;
+  }
+}
+
+// #htmlContent {
+//   border       : 3px solid #ccc;
+//   border-radius: 5px;
+//   padding      : 0 10px;
+//   margin-top   : 20px;
+//   overflow-x   : auto;
+// }
+
+#htmlContent p,
+#htmlContent li {
+  white-space: pre-wrap;
+  /* 保留空格 */
+}
+
+#htmlContent blockquote {
+  border-left     : 8px solid #d0e5f2;
+  padding         : 10px 10px;
+  margin          : 10px 0;
+  background-color: #f1f1f1;
+}
+
+#htmlContent code {
+  font-family     : monospace;
+  background-color: #eee;
+  padding         : 3px;
+  border-radius   : 3px;
+}
+
+#htmlContent pre>code {
+  display: block;
+  padding: 10px;
+}
+
+#htmlContent table {
+  border-collapse: collapse;
+}
+
+#htmlContent td,
+#htmlContent th {
+  border   : 1px solid #ccc;
+  min-width: 50px;
+  height   : 20px;
+  padding  : 0;
+}
+
+#htmlContent th {
+  background-color: #f1f1f1;
+}
+
+#htmlContent ul,
+#htmlContent ol {
+  padding-left: 20px;
+}
+
+#htmlContent input[type="checkbox"] {
+  margin-right: 5px;
+}
+
+.w-e-text-container blockquote,
+.w-e-text-container li,
+.w-e-text-container p,
+.w-e-text-container td,
+.w-e-text-container th,
+.w-e-toolbar * {
+  // line-height: 1
+}
+
+// .w-e-text-container blockquote,
+// .w-e-text-container li,
+// .w-e-text-container p,
+// .w-e-text-container td,
+// .w-e-text-container th,
+// .w-e-toolbar * {
+//   line-height: normal
+// }

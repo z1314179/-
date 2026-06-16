@@ -1,0 +1,70 @@
+---
+description: Ant Design Vue 弹层、a-table ellipsis 默认开启（除非说明不要）、rowSelection、链接按钮等项目约定
+globs: "**/*.vue"
+alwaysApply: false
+---
+
+# Modal / Drawer 显隐 `open`
+
+参考：`src/views/Contract/components/modals/HistoryVersionModal.vue`、`AddRelatedContractDrawer.vue`、`PartnerInfoModal.vue`（均在 `src/views/Contract/components/modals/`）。
+
+## 原则
+
+1. **子组件**：`defineProps({ open: Boolean })`，`defineEmits(['update:open', ...])`。
+2. **模板**：**`:open="open"`** 单向绑定到 `a-modal` / `a-drawer`；**不要**在子组件里对 Modal/Drawer 写 **`v-model:open`**，也不要用 `computed` 包一层再 `v-model`。
+3. **关闭**：在 **`@cancel`**（Modal）或 **`@close`**（Drawer）以及底部「取消」等按钮里统一 **`emit('update:open', false)`**。
+4. **父组件**：继续 **`v-model:open="xxx"`** 即可。
+
+---
+
+# a-table 列 `ellipsis`
+
+展示文案、名称、日期等**可能变长**的列，除非用户明确说**不要**省略，否则默认 **`ellipsis: true`**。典型可不写的列：**序号**、**操作**（仅按钮/链接）、固定宽度的纯图标列等。
+
+---
+
+# a-table `rowSelection`
+
+参考实现：`src/views/Contract/components/modals/AddRelatedContractDrawer.vue`。
+
+## 原则
+
+1. **只存 `row-key` 对应的 id 列表**（如 `selectedKeys: ref([])`），不要同时维护 `selectedRowKeys` + `selectedRows` 两份状态，避免分页时不同步。
+2. **`rowSelection` 用 `computed` 返回对象**：`selectedRowKeys` 绑定上述 id 列表；`onChange` **只接收第一个参数** `(keys) => { selectedKeys.value = keys }`。分页场景开启 **`preserveSelectedRowKeys: true`**。
+3. **需要完整行数据时**（保存、提交、统计）：用 id 列表在**全量数据集**上解析，例如 `getSelectedRecords()`，并按 `selectedKeys` 顺序排序。
+4. **不要用** `onChange(_, selectedRows)` 里的 `selectedRows` 作为全量已选的唯一来源（分页时通常只有当前页）。
+5. **`selectedRowKeys` 与数据源 `row-key` 类型一致**。
+
+## 反面示例（避免）
+
+- 子组件内 `<a-modal v-model:open="visibleProxy">` + `computed` 转发 `props.open`（多余，与项目约定不一致）。
+- `onChange` 里依赖 `selectedRows` 作为提交数据唯一来源。
+- `props` 与本地 `ref` 同名，造成遮蔽。
+
+---
+
+# 链接样式操作（`a-button type="link"`）
+
+表格「操作」列、工具栏文字链等**由点击触发行为**（非外链跳转）的控件，统一使用 **`<a-button type="link">`**。不要使用原生 `<a>` 冒充按钮（例如 `<a type="link" @click>`）。确实是外链时使用 `<a href="..." target="_blank" rel="noopener noreferrer">` 或路由 `<router-link>`。
+
+---
+
+# 组件 `size`
+
+除非用户在需求中**明确写出**要使用某种尺寸（如 `small` / `middle` / `large`），否则**不要**主动为 Ant Design Vue 组件添加 **`size`** 属性（例如 `a-table`、`a-button`、`a-input`、`a-form` 等），沿用组件默认尺寸。
+
+---
+
+# 实现与样式（通用）
+
+1. **只写需求内的内容**，不夹带「顺手优化」、不扩散无关改动。  
+2. **样式能省则省**：优先用组件默认与页面已有 `:deep`；非必要不写 scoped/内联。  
+3. **必须加 class 时**：名简短（如 `fi-row`、`hdr`），避免长前缀链式命名。
+
+---
+
+# 详情 / 只读展示（数据写法，**强调**）
+
+1. **以字段直出为主**：`reactive` / `ref` 上平铺要展示的值，模板里 **`{{ formState.xxx }}`** 即可（接口赋值同一套字段）。  
+2. **默认不要**为「好看」而加：`optionLabel` 一类枚举反查、从 `mock` / `schema` 映射文案、不必要的 `computed` 拼接、多余工具函数——**除非需求或用户明确写出要这样做**。  
+3. **没有强调就用最简单的方式**：能一条插值就不要包一层方法；确有必要时再抽逻辑。

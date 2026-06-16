@@ -1,0 +1,228 @@
+---
+description: 合同审批时间线 useApprovalDetailTimeline.js 的设计思路与逻辑说明（修改前请先阅读）
+globs: src/views/Contract/useApprovalDetailTimeline.js,src/views/Contract/components/ApprovalDetailTimeline.vue
+alwaysApply: false
+---
+
+# 审批时间线逻辑说明
+
+关联文件：
+- 核心逻辑：`src/views/Contract/useApprovalDetailTimeline.js`
+- 表格展示：`src/views/Contract/components/ApprovalDetailTimeline.vue`
+入参 `workflowForeData` 主要字段：
+
+```
+workflowForeData
+├── processInstances          # 当前流程实例
+│   ├── businessId
+│   ├── status                # RUNNING / COMPLETED 等
+│   ├── operationRecords[]    # 历史操作（时间正序）
+│   │   ├── date, type, userId, activityId, showName, remark, result
+│   └── tasks[]               # 全部审批任务
+│       ├── taskId, activityId, userId, status, result, createTime, finishTime
+├── workflowForecastNodes[]   # 流程节点顺序（含 endId）
+├── workflowActivityRules[]   # 节点规则
+│   ├── activityId, activityName, activityActioners[], workflowActor.approvalMethod
+└── processHistories[]        # 历史流程（取 extJson，且 businessId ≠ 当前）
+```
+
+`getData` 会 `JSON.parse(JSON.stringify(nodeData))` 深拷贝后再组装，避免污染原数据。
+
+---
+| 列 | 来源 |
+|---|---|
+| 操作节点 | `getApproverDisplay(record)` |
+| 操作类型 | `record.showName` |
+| 审批意见 | `record.remark` |
+| 操作时间 | `record.date` |
+
+---
+
+## 总体思路
+
+把钉钉流程数据转成**表格行数组** `approvalTableData`，每行一条时间线记录。行分三类：
+
+1. **历史操作行**：来自 `operationRecords`（`handletasks` 生成，带 `index`）
+2. **进行中加签行**：合成行，`isAppendPending: true`，插在 forecast 节点前
+3. **forecast 节点行**：当前及后续待审批节点（来自 `workflowForecastNodes`）
+
+展示与组装分离：组装只负责 `res[]` 结构与字段；`getApproverDisplay` 负责「操作节点」列文案。
+
+### 如何区分一行属于哪类
+
+| 特征 | 行类型 |
+|------|--------|
+| 有 `index` | 历史 operationRecords 行 |
+| `isAppendPending === true` | 进行中加签合成行 |
+| 有 `activityActioners`、无 `index` | forecast 节点行 |
+
+时间线竖线颜色：`finalizeTimelineRecords` 写入 `statusCode` → `ApprovalTimelineLine`
+
+| statusCode | 含义 |
+|------------|------|
+| 0 | 待开始 / forecast |
+| 1 | RUNNING 审批中 |
+| 2 | AGREE / NONE |
+| 3 | REFUSE |
+
+---
+
+## 数据组装主流程 `buildTimelineRecords`
+
+```
+appendHistoryRecords     → 历史流程 extJson
+handletasks              → 当前 processInstances.operationRecords
+resolveRunningAppendState → 进行中加签 pendingRow（可为 null）
+buildForecastRows        → 当前节点 + 后续 forecast
+insertAppendPendingRow   → pendingRow 插到 forecast 行前
+finalizeTimelineRecords  → nextRecord / statusCode / msg / NODENAME
+```
+
+`useApprovalDetailTimeline` composable 只做：拉钉钉用户映射 → `buildTimelineRecords` → 写入 `approvalRecords`。
+
+---
+
+## 历史行 `handletasks`
+
+- 按 `activityId` 分组 `tasks`（`groupTasksByActivity`），按 `createTime` 排序
+- 遍历 `operationRecords`，给每条写入：
+  - `tasksAll`：该节点全部 task
+  - `tasks`：与本次操作相关的 task 子集
+  - `index`：倒序序号（历史加签行一定有 `index`）
+  - `operationRecords`：完整列表（供加签兜底用）
+
+**转交** `REDIRECT_TASK`：`tasks` = `createTime === item.date` 的 task
+
+**加签** `APPEND_TASK_BEFORE/AFTER`：`tasks` = `getAppendBatchTasks(...)`（见下）
+
+后加签 `APPEND_TASK_AFTER`：批次取 `createTime >= item.date` 且在上界内的 tasks，逻辑与前加签不同。
+
+`processHistories`：只处理 `dingProcessBusinessId != processInstances.businessId` 的历史，取其 `extJson` 走同样 `handletasks`。
+
+---
+
+## 加签：两套逻辑（勿混用）
+
+### A. 历史加签行展示（operationRecords 里已发生的加签）
+
+用于 `formatAppendDisplay`，依赖 **批次匹配**：
+
+- `getAppendUpperBound`：找「下一次同节点操作」时间，隔离多次加签
+- `getAppendBatchTasks`：在 `[item.date, upperBound)` 内取本批次被加签 task
+- `getAppendedTasks`：从批次中排除操作人、占位 userId；历史行可含 NEW
+- 若本批次 task 已被覆盖： `getAppendDisplayFallback` 用**下一次加签操作人**兜底
+
+历史行展示：`操作人 + 审批前/后加签 + 被加签人`  
+若被加签人仍在 RUNNING：**不展示**被加签人（避免与 pending 行重复）
+
+### B. 进行中加签 pending 行（合成行）
+
+用于 `resolveRunningAppendState` + `formatAppendPendingDisplay`：
+
+- 从**最近一次**加签 operation 往前找
+- 取该 `activityId` 上**全部 RUNNING task**（**不按 createTime 批次过滤**）
+  - 原因：前一人同意后，新 RUNNING task 可能在更晚时刻创建（如 17:58），不属于加签时刻批次
+- 生成 `pendingRow`：`isAppendPending: true`，**不带 `remark` / `date`**
+- 插入位置：`findForecastNodeIndex` 找到的 forecast 审批节点**之前**
+
+进行中展示：`(前加签) 人A、人B（审批中）`  
+- **不展示**会签/或签/依次（加签不取 `workflowActor.approvalMethod`）
+
+### 有进行中加签时 forecast 当前节点
+
+- `buildForecastRows` 里当前节点 `result = ""`（不是 RUNNING）
+- `getApproverDisplay` 走 `formatForecastPendingDisplay`
+- 展示：`activityActioners` + 审批方式 + `（待审批）`  
+  例：`张海鹏、北辰 依次（待审批）`
+
+---
+
+## 操作节点列 `getApproverDisplay` 分发顺序
+
+```
+1. REDIRECT_TASK        → formatRedirectDisplay
+2. isAppendPending      → formatAppendPendingDisplay
+3. result===RUNNING && tasks → formatRunningDisplay（无加签时审批中）
+4. 加签历史 type        → formatAppendDisplay
+5. 其他有 result        → formatCompletedDisplay
+6. 无 result            → formatForecastPendingDisplay（forecast 待审批）
+```
+
+`formatRunningDisplay`：多人时加 `APPROVAL_METHOD_TEXT` + `（审批中）`  
+`formatAppendPendingDisplay`：仅 `(前/后加签) 人名（审批中）`，无审批方式
+
+### 其他已完成操作（`formatCompletedDisplay`）
+
+| type | 操作节点展示 |
+|------|----------------|
+| `EXECUTE_TASK_NORMAL` | `人名（已同意/已拒绝）` |
+| `PROCESS_CC` | 抄送人列表 |
+| `REDIRECT_PROCESS` | `人名退回 + 下一节点名（NODENAME）` |
+| 其他有 result | 仅操作人 |
+
+### 组件未用但已导出的 API
+
+- `handleMsg(record)`：操作类型列文案（组件目前用 `showName`）
+- `getStatusDisplay(record)`：状态文案
+- `dingUserList`：钉钉用户映射 ref
+
+---
+
+## 转交
+
+- `resolveRedirectTargetTask`：沿 `finishTime === createTime` 链解析 REDIRECTED
+- `getRedirectTargetTask` / `resolveRedirectTargetUserId`：找转交目标
+- 占位 userId（含 `_`）：`resolveRealUserIdFromTasks` 沿 task 链替换
+
+---
+
+## 人员显示
+
+- `dingUserListRef`：`getDingUserList` 的 userid → name
+- `resolveApproverDisplay`：单/多人（数组用 `、` 连接）
+
+---
+
+## 修改时注意（踩坑记录）
+
+1. **不要把进行中加签改回 `getAppendBatchTasks`**，否则 17:58 新建的 RUNNING 会丢失，加签行消失
+2. **不要把加签 pending 行与 forecast 审批中合并一行**，应独立行 + forecast 待审批两行
+3. **pending 行不要带 `remark`/`date`**，避免显示加签操作的备注和时间
+4. **历史加签批次**必须用 `getAppendUpperBound` 隔离，否则多次加签 task 混在一起
+5. 改动手前先 Read 当前文件，不要凭对话历史推断内容
+6. 只做需求最小改动，不擅自加 size、不顺手重构无关代码
+
+---
+
+## 模块结构速查
+
+| 区块 | 关键函数 |
+|------|----------|
+| 人员 | `resolveApproverDisplay`, `resolveRealUserIdFromTasks` |
+| 历史加签 | `getAppendBatchTasks`, `getAppendedTasks`, `formatAppendDisplay` |
+| 进行中加签 | `resolveRunningAppendState`, `formatAppendPendingDisplay`, `insertAppendPendingRow` |
+| 转交 | `resolveRedirectTargetTask`, `formatRedirectDisplay` |
+| 展示 | `getApproverDisplay`, `handleMsg`, `getStatusDisplay` |
+| 组装 | `buildTimelineRecords`, `handletasks`, `buildForecastRows` |
+
+---
+
+## 典型展示预期（有加签进行中）
+
+| 行类型 | 操作节点示例 |
+|--------|----------------|
+| 历史加签 | `张海鹏 审批前加签 张三` |
+| 加签 pending | `(前加签) 李四、王五（审批中）` |
+| forecast 当前节点 | `张海鹏、北辰 依次（待审批）` |
+
+审批意见/时间：历史加签行有；加签 pending 行显示 `-`
+
+---
+
+## 完整性说明
+
+**已覆盖（改这块够用了）：** 组装主流程、历史/进行中加签两套逻辑、展示分发、转交、人员解析、踩坑记录、典型 UI 预期。
+
+**未展开（一般不用动）：** 钉钉原始字段全量枚举、`contractProcessMap.js` 与流程映射、各业务页如何组装 `workflowForeData`。
+
+若改展示列或启用 `handleMsg`，需同步改 `ApprovalDetailTimeline.vue`。

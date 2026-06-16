@@ -1,0 +1,79 @@
+{
+  "数字资产模版": {
+    "value": "数字资产模版",
+    "fixedFields": [{
+        "id": "field-store-name",
+        "paletteLabel": "店铺名称",
+        "componentType": "TextField",
+        "props": {
+          "fieldName": "storeName",
+          "label": "店铺名称",
+          "required": true,
+          "placeholder": "请输入店铺名称"
+        }
+      },
+      {
+        "id": "field-online-channel",
+        "paletteLabel": "销售线上渠道",
+        "componentType": "TextField",
+        "props": {
+          "fieldName": "onlineChannel",
+          "label": "销售线上渠道",
+          "required": true,
+          "placeholder": "请输入销售线上渠道"
+        }
+      },
+      {
+        "id": "field-store-domain",
+        "paletteLabel": "店铺网络地址",
+        "componentType": "TextField",
+        "props": {
+          "fieldName": "storeDomain",
+          "label": "店铺网络地址",
+          "required": false,
+          "placeholder": "请输入店铺网络地址"
+        }
+      },
+      {
+        "id": "field-service-fee",
+        "paletteLabel": "基础服务费用",
+        "componentType": "NumberField",
+        "props": {
+          "fieldName": "serviceFee",
+          "label": "基础服务费用",
+          "required": true,
+          "placeholder": "请输入基础服务费用",
+          "precision": 2,
+          "min": 0
+        }
+      },
+      {
+        "id": "field-fixed-commission",
+        "paletteLabel": "固定佣金",
+        "componentType": "NumberField",
+        "props": {
+          "fieldName": "fixedCommission",
+          "label": "固定佣金",
+          "required": true,
+          "placeholder": "请输入固定佣金",
+          "precision": 2,
+          "min": 0
+        }
+      },
+      {
+        "id": "field-commission-rate",
+        "paletteLabel": "佣金比例",
+        "componentType": "NumberField",
+        "props": {
+          "fieldName": "commissionRate",
+          "label": "佣金比例",
+          "required": false,
+          "placeholder": "请输入佣金比例",
+          "precision": 2,
+          "min": 0
+        }
+      }
+    ]
+  }
+
+}

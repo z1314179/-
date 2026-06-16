@@ -1,0 +1,130 @@
+{
+  "workflowForecastNodes": [
+    { "activityId": "sid-startevent", "outId": "line-random-sid-startevent-73dc_fa56" },
+    { "activityId": "73dc_fa56", "outId": "line-random-73dc_fa56-7fe0_bd26" },
+    { "activityId": "7fe0_bd26", "outId": "line-random-7fe0_bd26-b5b3_86c7" },
+    { "activityId": "b5b3_86c7", "outId": "line-random-b5b3_86c7-endId" },
+    { "activityId": "endId" }
+  ],
+  "workflowActivityRules": [
+    {
+      "activityId": "73dc_fa56",
+      "prevActivityId": "sid-startevent",
+      "workflowActor": {
+        "actorType": "approver",
+        "approvalType": "MANUAL",
+        "actorActivateType": "ALL",
+        "approvalMethod": "OR",
+        "allowedMulti": true,
+        "actorSelectionRange": [],
+        "required": false
+      },
+      "activityActioners": [
+        { "name": "张海鹏", "avatar": "", "userId": "672762132224311512" },
+        { "name": "北辰", "avatar": "", "userId": "1746141718696185" }
+      ],
+      "isTargetSelect": false,
+      "activityName": "审批人",
+      "activityType": "target_approval"
+    },
+    {
+      "activityId": "7fe0_bd26",
+      "prevActivityId": "73dc_fa56",
+      "workflowActor": {
+        "actorType": "notifier",
+        "actorKey": "manual_7fe0_bd26_e4f8_64c0",
+        "actorSelectionType": "allStaff",
+        "allowedMulti": true,
+        "actorSelectionRange": [],
+        "required": false
+      },
+      "activityActioners": [
+        { "name": "北辰测试", "userId": "026019136024669936931" }
+      ],
+      "isTargetSelect": true,
+      "activityName": "抄送人",
+      "activityType": "target_approval"
+    },
+    {
+      "activityId": "b5b3_86c7",
+      "prevActivityId": "7fe0_bd26",
+      "workflowActor": {
+        "actorType": "approver",
+        "approvalType": "MANUAL",
+        "actorActivateType": "ALL",
+        "approvalMethod": "OR",
+        "allowedMulti": true,
+        "actorSelectionRange": [],
+        "required": false
+      },
+      "activityActioners": [
+        { "name": "北辰测试", "userId": "026019136024669936931" },
+        { "name": "张海鹏", "avatar": "", "userId": "672762132224311512" }
+      ],
+      "isTargetSelect": false,
+      "activityName": "审批人",
+      "activityType": "target_approval"
+    }
+  ],
+  "processInstances": {
+    "attachedProcessInstanceIds": [],
+    "businessId": "202606111538000558198",
+    "title": "北辰提交的合同模板2(字段少)",
+    "originatorDeptId": "818166571",
+    "operationRecords": [
+      { "date": "2026-06-11T15:38Z", "result": "NONE", "images": [], "showName": "提交申请", "type": "START_PROCESS_INSTANCE", "userId": "1746141718696185" },
+      { "date": "2026-06-11T19:59Z", "result": "AGREE", "activityId": "73dc_fa56", "images": [], "showName": "审批人", "remark": "", "type": "EXECUTE_TASK_NORMAL", "userId": "672762132224311512" },
+      { "date": "2026-06-11T19:59Z", "result": "NONE", "activityId": "7fe0_bd26", "images": [], "showName": "抄送人", "ccUserIds": ["026019136024669936931"], "remark": "", "type": "PROCESS_CC", "userId": "1746141718696185" },
+      { "date": "2026-06-11T20:00Z", "result": "NONE", "activityId": "b5b3_86c7", "images": [], "showName": "审批人", "remark": "", "type": "REDIRECT_PROCESS", "userId": "672762132224311512" },
+      { "date": "2026-06-11T20:33Z", "result": "NONE", "activityId": "73dc_fa56", "images": [], "showName": "审批人", "remark": "", "type": "REDIRECT_TASK", "userId": "672762132224311512" },
+      { "date": "2026-06-11T20:40Z", "result": "AGREE", "activityId": "73dc_fa56", "images": [], "showName": "审批人", "remark": "同意", "type": "EXECUTE_TASK_NORMAL", "userId": "0819694451648267" },
+      { "date": "2026-06-11T20:40Z", "result": "NONE", "activityId": "7fe0_bd26", "images": [], "showName": "抄送人", "ccUserIds": ["026019136024669936931"], "remark": "", "type": "PROCESS_CC", "userId": "1746141718696185" },
+      { "date": "2026-06-11T20:40Z", "result": "NONE", "activityId": "73dc_fa56", "images": [], "showName": "审批人（抄送或签审批人）", "ccUserIds": ["672762132224311512"], "type": "PROCESS_CC", "userId": "1746141718696185" },
+      { "date": "2026-06-11T20:46Z", "result": "NONE", "activityId": "b5b3_86c7", "images": [], "showName": "审批人", "remark": "", "type": "REDIRECT_PROCESS", "userId": "672762132224311512" },
+      { "date": "2026-06-11T20:47Z", "result": "AGREE", "activityId": "73dc_fa56", "images": [], "showName": "审批人", "remark": "情况属实", "type": "EXECUTE_TASK_NORMAL", "userId": "672762132224311512" },
+      { "date": "2026-06-11T20:47Z", "result": "NONE", "activityId": "7fe0_bd26", "images": [], "showName": "抄送人", "ccUserIds": ["026019136024669936931"], "remark": "", "type": "PROCESS_CC", "userId": "1746141718696185" },
+      { "date": "2026-06-11T20:48Z", "result": "NONE", "activityId": "b5b3_86c7", "images": [], "showName": "审批人", "remark": "", "type": "APPEND_TASK_BEFORE", "userId": "672762132224311512" },
+      { "date": "2026-06-11T20:50Z", "result": "AGREE", "activityId": "b5b3_86c7", "images": [], "showName": "审批人", "type": "EXECUTE_TASK_NORMAL", "userId": "0819694451648267" },
+      { "date": "2026-06-11T20:54Z", "result": "NONE", "activityId": "b5b3_86c7", "images": [], "showName": "审批人", "remark": "", "type": "APPEND_TASK_BEFORE", "userId": "672762132224311512" },
+      { "date": "2026-06-11T20:54Z", "result": "AGREE", "activityId": "b5b3_86c7", "images": [], "showName": "审批人", "type": "EXECUTE_TASK_NORMAL", "userId": "0819694451648267" },
+      { "date": "2026-06-11T20:54Z", "result": "NONE", "activityId": "b5b3_86c7", "images": [], "showName": "审批人", "remark": "", "type": "APPEND_TASK_BEFORE", "userId": "672762132224311512" },
+      { "date": "2026-06-11T21:46Z", "result": "AGREE", "activityId": "b5b3_86c7", "images": [], "showName": "审批人", "type": "EXECUTE_TASK_NORMAL", "userId": "0819694451648267" },
+      { "date": "2026-06-11T21:47Z", "result": "NONE", "activityId": "b5b3_86c7", "images": [], "showName": "审批人", "remark": "", "type": "APPEND_TASK_BEFORE", "userId": "672762132224311512" },
+      { "date": "2026-06-11T21:55Z", "result": "AGREE", "activityId": "b5b3_86c7", "images": [], "showName": "审批人", "type": "EXECUTE_TASK_NORMAL", "userId": "0819694451648267" },
+      { "date": "2026-06-11T21:56Z", "result": "NONE", "activityId": "b5b3_86c7", "images": [], "showName": "审批人", "remark": "", "type": "APPEND_TASK_AFTER", "userId": "672762132224311512" },
+      { "date": "2026-06-11T21:56Z", "result": "AGREE", "activityId": "b5b3_86c7", "images": [], "showName": "审批人", "remark": "", "type": "EXECUTE_TASK_NORMAL", "userId": "672762132224311512" },
+      { "date": "2026-06-11T21:56Z", "result": "NONE", "activityId": "b5b3_86c7", "images": [], "showName": "审批人（抄送或签审批人）", "ccUserIds": ["026019136024669936931"], "type": "PROCESS_CC", "userId": "1746141718696185" },
+      { "date": "2026-06-11T21:56Z", "result": "AGREE", "activityId": "b5b3_86c7", "images": [], "showName": "审批人", "type": "EXECUTE_TASK_NORMAL", "userId": "0819694451648267" }
+    ],
+    "result": "agree",
+    "bizAction": "NONE",
+    "ccUserIds": ["026019136024669936931", "672762132224311512"],
+    "createTime": "2026-06-11T15:38Z", 
+    "originatorUserId": "1746141718696185",
+    "tasks": [
+      { "result": "AGREE", "activityId": "73dc_fa56", "finishTime": "2026-06-11T20:40Z", "createTime": "2026-06-11T20:33Z", "userId": "0819694451648267", "taskId": 101663875527, "status": "COMPLETED" },
+      { "result": "AGREE", "activityId": "b5b3_86c7", "finishTime": "2026-06-11T21:46Z", "createTime": "2026-06-11T20:54Z", "userId": "0819694451648267", "taskId": 101700870942, "status": "COMPLETED" },
+      { "result": "AGREE", "activityId": "b5b3_86c7", "finishTime": "2026-06-11T20:50Z", "createTime": "2026-06-11T20:48Z", "userId": "0819694451648267", "taskId": 101700974486, "status": "COMPLETED" },
+      { "result": "AGREE", "activityId": "b5b3_86c7", "finishTime": "2026-06-11T21:55Z", "createTime": "2026-06-11T21:47Z", "userId": "0819694451648267", "taskId": 101701642029, "status": "COMPLETED" },
+      { "result": "NONE", "activityId": "b5b3_86c7", "createTime": "2026-06-11T21:47Z", "userId": "V00_1400815737560", "taskId": 101701642030, "status": "CANCELED" },
+      { "result": "NONE", "activityId": "b5b3_86c7", "createTime": "2026-06-11T19:59Z", "userId": "V00_1400815737560", "taskId": 101734265686, "status": "CANCELED" },
+      { "result": "NONE", "activityId": "b5b3_86c7", "createTime": "2026-06-11T19:59Z", "userId": "V00_1400815737560", "taskId": 101734265687, "status": "CANCELED" },
+      { "result": "AGREE", "activityId": "b5b3_86c7", "finishTime": "2026-06-11T20:54Z", "createTime": "2026-06-11T20:54Z", "userId": "0819694451648267", "taskId": 101734861811, "status": "COMPLETED" },
+      { "result": "NONE", "activityId": "b5b3_86c7", "createTime": "2026-06-11T21:55Z", "userId": "V00_1400815737560", "taskId": 101734865512, "status": "CANCELED" },
+      { "result": "AGREE", "activityId": "b5b3_86c7", "finishTime": "2026-06-11T21:56Z", "createTime": "2026-06-11T21:55Z", "userId": "672762132224311512", "taskId": 101734865513, "status": "COMPLETED" },
+      { "result": "AGREE", "activityId": "b5b3_86c7", "finishTime": "2026-06-11T21:56Z", "createTime": "2026-06-11T21:56Z", "userId": "0819694451648267", "taskId": 101735497858, "status": "COMPLETED" },
+      { "result": "NONE", "activityId": "b5b3_86c7", "createTime": "2026-06-11T21:56Z", "userId": "1746141718696185", "taskId": 101735497859, "status": "RUNNING" },
+      { "result": "AGREE", "activityId": "73dc_fa56", "finishTime": "2026-06-11T19:59Z", "createTime": "2026-06-11T15:38Z", "userId": "672762132224311512", "taskId": 101763552634, "status": "COMPLETED" },
+      { "result": "NONE", "activityId": "73dc_fa56", "createTime": "2026-06-11T15:38Z", "userId": "V00_1400815737560", "taskId": 101763552635, "status": "CANCELED" },
+      { "result": "REDIRECTED", "activityId": "73dc_fa56", "finishTime": "2026-06-11T20:33Z", "createTime": "2026-06-11T20:00Z", "userId": "672762132224311512", "taskId": 101771136199, "status": "CANCELED" },
+      { "result": "NONE", "activityId": "73dc_fa56", "createTime": "2026-06-11T20:00Z", "userId": "V00_1400815737560", "taskId": 101771136200, "status": "CANCELED" },
+      { "result": "NONE", "activityId": "b5b3_86c7", "createTime": "2026-06-11T20:40Z", "userId": "V00_1400815737560", "taskId": 101771512714, "status": "CANCELED" },
+      { "result": "NONE", "activityId": "b5b3_86c7", "createTime": "2026-06-11T20:40Z", "userId": "V00_1400815737560", "taskId": 101771512715, "status": "CANCELED" },
+      { "result": "AGREE", "activityId": "73dc_fa56", "finishTime": "2026-06-11T20:47Z", "createTime": "2026-06-11T20:46Z", "userId": "672762132224311512", "taskId": 101771648299, "status": "COMPLETED" },
+      { "result": "NONE", "activityId": "73dc_fa56", "createTime": "2026-06-11T20:46Z", "userId": "V00_1400815737560", "taskId": 101771648300, "status": "CANCELED" }
+    ],
+    "originatorDeptName": "投放部门2",
+    "status": "RUNNING"
+  },
+  "processHistories": []
+}

@@ -1,0 +1,61 @@
+/* @import url('./moudle.css'); */
+@import url('./antd.css');
+@import url('./iconfont/iconfont.css');
+@import url('./free.css');
+@import url('./system.css');
+@import url('./moudles.css');
+@import url('./Alternate.css');
+
+.iconfont {
+  line-height   : normal;
+  /* color      : var(--text-color); */
+}
+
+:root {
+  --color-primary: #1677FF;
+  --color-primary-bg: #e6f4ff;
+  --text-color   : rgba(0, 0, 0, 0.85);
+  --tip-color    : rgba(0, 0, 0, 0.45)
+}
+
+* {
+  padding: 0;
+  margin : 0;
+}
+
+/* em 和 i 斜体的文字不倾斜 */
+i {
+  font-style: normal;
+}
+
+/* 去掉li 的小圆点 */
+li {
+  /* list-style: none; */
+}
+
+img {
+  /* border 0 照顾低版本浏览器 如果 图片外面包含了链接会有边框的问题 */
+  border        : 0;
+  /* 取消图片底侧有空白缝隙的问题 */
+  vertical-align: middle;
+}
+
+body {
+  -webkit-font-smoothing     : antialiased;
+  font-family                : PingFangSC, PingFang SC;
+  font-weight                : 400;
+  font-size                  : 14px;
+  color                      : var(--text-color);
+  /* -moz-user-select        : none;
+  -webkit-user-select        : none;
+  -ms-user-select            : none;
+  -khtml-user-selece         : none;
+  user-select                : none; */
+
+}
+
+div,
+span,
+p {
+  /* caret-color: transparent; */
+}

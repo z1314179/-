@@ -1,0 +1,45 @@
+---
+description: 优先用组件配置解决；禁止无必要的转换层与过度封装（必须严格执行）
+alwaysApply: true
+---
+
+# 优先配置、保持简单（**必须严格执行**）
+
+## 原则
+
+1. **先想最简单方案**：能用组件自带能力（`options`、`field-names`、`v-model`、API 字段）解决的，**不要**写转换函数、中间 `computed`、二次映射对象。
+2. **先读数据源字段**：对照 JSON / 接口真实字段名配置 `field-names`，**不要**先 `map` 成 `{ label, value }` 再配 `field-names: { label: 'label', value: 'value' }`（字段对不上等于白配）。
+3. **选对组件**：场景匹配就用 Ant Design 原生组件（如省市区用 `a-cascader`），**不要**套用不适配的封装（如把地址塞进基于 TreeSelect 的级联）。
+4. **用户说「配置里处理」**：即停止加 script 转换逻辑，改 `field-names` / `options` 绑定方式。
+5. **最小改动**：不叠 id↔中文、不叠 `findXxxPath` / `mapXxxOptions`，除非业务或后端**明确要求**且无法用配置表达。
+
+## 地址字段（本项目约定）
+
+```vue
+<a-cascader
+  v-model:value="formData[fieldKey]"
+  :options="cityData"
+  :field-names="{ label: 'ext_name', value: 'ext_name', children: 'children' }"
+  allow-clear
+  show-search
+/>
+```
+
+- `formData` 存中文路径数组，如 `['河北省','石家庄市','新华区']`。
+- **禁止**：`mapCityOptions`、`addressCascaderValue`、用 `id` 存值再转中文、为消 TreeSelect 警告而绕大圈。
+
+## 反例（禁止在未确认必要时使用）
+
+```js
+// ❌ 多余：数据源已是树，却整树 remap
+const mapCityOptions = (list) => list.map((n) => ({ label: n.ext_name, value: n.id, ... }))
+
+// ❌ 多余：配置能直连却包一层 computed 转换
+const addressCascaderValue = computed({ get() { ... findIdPath ... }, set() { ... toLabels ... } })
+```
+
+## 自检（改 UI / 表单控件前必过）
+
+- [ ] 能否只改模板上的 `:field-names` / `:options`？
+- [ ] 新增函数是否仅为「适配组件」？若是，先改用正确组件或 `field-names`。
+- [ ] 用户是否已指出更简单做法？若有，**以用户方案为准**，不要坚持复杂实现。

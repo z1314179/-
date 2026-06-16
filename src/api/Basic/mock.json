@@ -1,0 +1,200 @@
+{
+    "errno": 0,
+    "errmsg": "\u6210\u529f",
+    "data": [
+        {
+            "componentName": "TextField",
+            "props": {
+                "staffStatusEnabled": false,
+                "holidayOptions": [],
+                "bizAlias": "",
+                "id": "TextField-K2AD4O5B",
+                "label": "\u9500\u552e\u7ebf\u4e0a\u6e20\u9053",
+                "placeholder": "\u8bf7\u8f93\u5165",
+                "push": []
+            }
+        },
+        {
+            "componentName": "DDAttachment",
+            "props": {
+                "staffStatusEnabled": false,
+                "holidayOptions": [],
+                "bizAlias": "",
+                "id": "DDAttachment_BAFDHLM6EO74",
+                "label": "\u5408\u540c\u9644\u4ef6",
+                "required": false,
+                "push": []
+            }
+        },
+        {
+            "children": [
+                {
+                    "componentName": "TextField",
+                    "props": {
+                        "bizAlias": "",
+                        "id": "TextField_1BCJV8ZITEQRK",
+                        "label": "\u52171",
+                        "required": false
+                    }
+                },
+                {
+                    "componentName": "DDMultiSelectField",
+                    "props": {
+                        "options": [
+                            "{\"value\":\"\u9009\u98791\",\"key\":\"option_0\"}",
+                            "{\"value\":\"\u9009\u98792\",\"key\":\"option_1\"}",
+                            "{\"value\":\"\u9009\u98793\",\"key\":\"option_2\"}"
+                        ],
+                        "bizAlias": "",
+                        "id": "DDMultiSelectField_1J50D7OFLZHFK",
+                        "label": "\u52172",
+                        "required": false
+                    }
+                }
+            ],
+            "componentName": "TableField",
+            "props": {
+                "staffStatusEnabled": false,
+                "holidayOptions": [],
+                "bizAlias": "",
+                "id": "TableField_1692ERS1Z41KW",
+                "label": "\u8bc9\u8bbc\u8d39\u7528\u660e\u7ec6",
+                "push": [],
+                "actionName": "\u6dfb\u52a0"
+            }
+        },
+        {
+            "componentName": "DDMultiSelectField",
+            "props": {
+                "staffStatusEnabled": false,
+                "holidayOptions": [],
+                "options": [
+                    "{\"value\":\"\u9009\u98791\",\"key\":\"option_0\"}",
+                    "{\"value\":\"\u9009\u98792\",\"key\":\"option_1\"}",
+                    "{\"value\":\"\u9009\u98793\",\"key\":\"option_2\"}"
+                ],
+                "bizAlias": "",
+                "id": "DDMultiSelectField_1E6FJXMY862V4",
+                "label": "\u76f4\u64ad\u5f62\u5f0f",
+                "placeholder": "\u8bf7\u9009\u62e9",
+                "required": true,
+                "push": [],
+                "fieldsInfo": "[]",
+                "behaviorLinkage": [
+                    {
+                        "value": "option_0",
+                        "targets": [
+                            {
+                                "behavior": "NORMAL",
+                                "fieldId": "DDDateField_1WMQVUVBMRPJ4"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "componentName": "DDDateField",
+            "props": {
+                "staffStatusEnabled": false,
+                "unit": "\u5929",
+                "holidayOptions": [],
+                "format": "yyyy-MM-dd",
+                "bizAlias": "",
+                "id": "DDDateField_1WMQVUVBMRPJ4",
+                "label": "\u670d\u52a1\u4ea4\u4ed8\u65f6\u95f4",
+                "placeholder": "\u8bf7\u9009\u62e9",
+                "required": false,
+                "push": []
+            }
+        },
+        {
+            "children": [
+                {
+                    "componentName": "TextField",
+                    "props": {
+                        "id": "contractName",
+                        "label": "\u5408\u540c\u540d\u79f0"
+                    }
+                },
+                {
+                    "componentName": "TextField",
+                    "props": {
+                        "id": "contractAmount",
+                        "label": "\u5408\u540c\u603b\u989d"
+                    }
+                },
+                {
+                    "componentName": "TextField",
+                    "props": {
+                        "id": "contractRestAmount",
+                        "label": "\u5f85\u6536\/\u5f85\u4ed8"
+                    }
+                },
+                {
+                    "componentName": "TextField",
+                    "props": {
+                        "id": "contractOtherPartyList",
+                        "label": "\u5bf9\u65b9\u4e3b\u4f53"
+                    }
+                },
+                {
+                    "componentName": "TextField",
+                    "props": {
+                        "id": "contractOurPartyList",
+                        "label": "\u6211\u65b9\u4e3b\u4f53"
+                    }
+                },
+                {
+                    "componentName": "TextField",
+                    "props": {
+                        "id": "contractNo",
+                        "label": "\u5408\u540c\u7f16\u53f7"
+                    }
+                }
+            ],
+            "componentName": "OpenDataField",
+            "props": {
+                "staffStatusEnabled": false,
+                "holidayOptions": [],
+                "notPrint": "0",
+                "id": "OpenDataField_RKQPJE8SV0U8",
+                "label": "\u5173\u8054\u5408\u540c",
+                "placeholder": "\u6dfb\u52a0\u5408\u540c",
+                "push": [],
+                "fieldsInfo": "[{\"componentName\":\"TextField\",\"props\":{\"id\":\"contractName\",\"label\":\"\u5408\u540c\u540d\u79f0\"}},{\"componentName\":\"TextField\",\"props\":{\"id\":\"contractAmount\",\"label\":\"\u5408\u540c\u603b\u989d\"}},{\"componentName\":\"TextField\",\"props\":{\"id\":\"contractRestAmount\",\"label\":\"\u5f85\u6536\/\u5f85\u4ed8\"}},{\"componentName\":\"TextField\",\"props\":{\"id\":\"contractOtherPartyList\",\"label\":\"\u5bf9\u65b9\u4e3b\u4f53\"}},{\"componentName\":\"TextField\",\"props\":{\"id\":\"contractOurPartyList\",\"label\":\"\u6211\u65b9\u4e3b\u4f53\"}},{\"componentName\":\"TextField\",\"props\":{\"id\":\"contractNo\",\"label\":\"\u5408\u540c\u7f16\u53f7\"}}]"
+            }
+        },
+        {
+            "componentName": "TextField",
+            "props": {
+                "staffStatusEnabled": false,
+                "holidayOptions": [],
+                "bizAlias": "",
+                "id": "TextField_1WZGN6Q7JFW8W",
+                "label": "\u5e97\u94fa\u540d\u79f0",
+                "placeholder": "\u8bf7\u8f93\u5165",
+                "required": false,
+                "push": []
+            }
+        },
+        {
+            "componentName": "DDSelectField",
+            "props": {
+                "staffStatusEnabled": false,
+                "holidayOptions": [],
+                "options": [
+                    "{\"value\":\"\u9009\u98791\",\"key\":\"option_0\"}",
+                    "{\"value\":\"\u9009\u98792\",\"key\":\"option_1\"}",
+                    "{\"value\":\"\u9009\u98793\",\"key\":\"option_2\"}"
+                ],
+                "bizAlias": "",
+                "id": "DDSelectField_1ZYD0EJXMH5HC",
+                "label": "\u652f\u4ed8\u65b9\u5f0f",
+                "placeholder": "\u8bf7\u9009\u62e9",
+                "required": true,
+                "push": []
+            }
+        }
+    ]
+}

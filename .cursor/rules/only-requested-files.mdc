@@ -1,0 +1,18 @@
+---
+description: 只改用户点名的文件；禁止顺手改页面、格式化、扩 scope
+alwaysApply: true
+---
+
+# 修改范围（强制）
+
+1. **只改用户本次明确提到的文件**（`@` 路径、消息里写清的文件名）。未点名的文件 **一律不动**。
+2. **禁止「顺带」修改**：例如只让改 `useFileParse.js` 时，不得改 `ContractIntentionEditContent.vue`、`intentionEditFieldSchema.js` 等关联文件；逻辑应在用户指定的文件内完成，或先问用户是否允许改其它文件。
+3. **禁止未要求的格式化**：不要整文件重排换行、合并/展开模板属性、改缩进风格、删增空行，除非用户明确要求格式化。
+4. **用户要求还原某文件时**：对该文件使用 `git checkout -- <路径>` 还原到仓库版本，**不要**手改「猜」原样；其它文件不要动。
+5. **若认为必须改第二个文件才能完成任务**：先说明「需要改哪个文件、改什么」，等用户同意后再改；不要先改再问。
+
+## 示例
+
+- 用户：`改 useFileParse 第二步映射` → 只改 `src/hook/business/useFileParse.js`
+- 用户：`还原 ContractIntentionEditContent.vue` → 只 checkout 该文件，不动 hook
+- ❌ 修 hook 时「顺便」改 Vue 的一键填入、预览、`parseFile` 调用方式

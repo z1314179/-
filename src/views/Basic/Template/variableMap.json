@@ -1,0 +1,1725 @@
+{
+  "业务变量": {
+    "销售线上渠道": {
+      "componentName": "DDSelectField",
+      "sort": 1,
+      "rule": "",
+      "props": {
+        "id": "DDSelectField_销售线上渠道",
+        "label": "销售线上渠道",
+        "placeholder": "请选择",
+        "required": false,
+        "push": [],
+        "options": [
+          "{\"value\":\"抖音\",\"key\":\"option_0\"}",
+          "{\"value\":\"淘宝\",\"key\":\"option_1\"}",
+          "{\"value\":\"天猫\",\"key\":\"option_2\"}",
+          "{\"value\":\"拼多多\",\"key\":\"option_3\"}",
+          "{\"value\":\"小红书\",\"key\":\"option_4\"}",
+          "{\"value\":\"快手\",\"key\":\"option_5\"}",
+          "{\"value\":\"京东\",\"key\":\"option_6\"}",
+          "{\"value\":\"得物\",\"key\":\"option_7\"}",
+          "{\"value\":\"有赞\",\"key\":\"option_8\"}",
+          "{\"value\":\"视频号\",\"key\":\"option_9\"}"
+        ]
+      }
+    },
+    "店铺名称": {
+      "componentName": "TextField",
+      "sort": 2,
+      "rule": "",
+      "props": {
+        "id": "TextField_店铺名称",
+        "label": "店铺名称",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "店铺网络地址": {
+      "componentName": "TextField",
+      "sort": 3,
+      "rule": "",
+      "props": {
+        "id": "TextField_店铺网络地址",
+        "label": "店铺网络地址",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "是否丽知商城客户": {
+      "componentName": "DDSelectField",
+      "sort": 4,
+      "rule": "默认：否",
+      "props": {
+        "id": "DDSelectField_是否丽知商城客户",
+        "label": "是否丽知商城客户",
+        "placeholder": "请选择",
+        "required": false,
+        "push": [],
+        "options": [
+          "{\"value\":\"是\",\"key\":\"option_0\"}",
+          "{\"value\":\"否\",\"key\":\"option_1\"}"
+        ]
+      }
+    },
+    "丽知商城会员ID": {
+      "componentName": "TextField",
+      "sort": 5,
+      "rule": "",
+      "props": {
+        "id": "TextField_丽知商城会员ID",
+        "label": "丽知商城会员ID",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "是否有货返": {
+      "componentName": "DDSelectField",
+      "sort": 6,
+      "rule": "默认：否",
+      "props": {
+        "id": "DDSelectField_是否有货返",
+        "label": "是否有货返",
+        "placeholder": "请选择",
+        "required": false,
+        "push": [],
+        "options": [
+          "{\"value\":\"是\",\"key\":\"option_0\"}",
+          "{\"value\":\"否\",\"key\":\"option_1\"}"
+        ]
+      }
+    },
+    "直播平台": {
+      "componentName": "TextField",
+      "sort": 7,
+      "rule": "",
+      "props": {
+        "id": "TextField_直播平台",
+        "label": "直播平台",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "验收时间": {
+      "componentName": "NumberField",
+      "sort": 8,
+      "rule": "",
+      "props": {
+        "id": "NumberField_验收时间",
+        "label": "验收时间（工作日）",
+        "placeholder": "请输入数字",
+        "required": false,
+        "push": []
+      }
+    },
+    "货款结算方式": {
+      "componentName": "DDSelectField",
+      "sort": 9,
+      "rule": "",
+      "props": {
+        "id": "DDSelectField_货款结算方式",
+        "label": "货款结算方式",
+        "placeholder": "请选择",
+        "required": false,
+        "push": [],
+        "options": [
+          "{\"value\":\"先款后货\",\"key\":\"option_0\"}",
+          "{\"value\":\"货到付款\",\"key\":\"option_1\"}",
+          "{\"value\":\"双方约定账期\",\"key\":\"option_2\"}"
+        ]
+      }
+    },
+    "货物滞销时间": {
+      "componentName": "NumberField",
+      "sort": 10,
+      "rule": "",
+      "props": {
+        "id": "NumberField_货物滞销时间",
+        "label": "货物滞销时间（月）",
+        "placeholder": "请输入数字",
+        "required": false,
+        "push": []
+      }
+    },
+    "直播产品": {
+      "componentName": "TextField",
+      "sort": 11,
+      "rule": "",
+      "props": {
+        "id": "TextField_直播产品",
+        "label": "直播产品",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "主播名称": {
+      "componentName": "TextField",
+      "sort": 12,
+      "rule": "",
+      "props": {
+        "id": "TextField_主播名称",
+        "label": "主播名称",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "主播账号ID": {
+      "componentName": "TextField",
+      "sort": 13,
+      "rule": "",
+      "props": {
+        "id": "TextField_主播账号ID",
+        "label": "主播账号ID",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "直播店铺": {
+      "componentName": "TextField",
+      "sort": 14,
+      "rule": "",
+      "props": {
+        "id": "TextField_直播店铺",
+        "label": "直播店铺",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "直播形式": {
+      "componentName": "DDSelectField",
+      "sort": 15,
+      "rule": "",
+      "props": {
+        "id": "DDSelectField_直播形式",
+        "label": "直播形式",
+        "placeholder": "请选择",
+        "required": false,
+        "push": [],
+        "options": [
+          "{\"value\":\"专场\",\"key\":\"option_0\"}",
+          "{\"value\":\"混播\",\"key\":\"option_1\"}",
+          "{\"value\":\"其他\",\"key\":\"option_2\"}"
+        ]
+      }
+    },
+    "直播地点": {
+      "componentName": "TextField",
+      "sort": 16,
+      "rule": "",
+      "props": {
+        "id": "TextField_直播地点",
+        "label": "直播地点",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "保价期限": {
+      "componentName": "TextField",
+      "sort": 17,
+      "rule": "",
+      "props": {
+        "id": "TextField_保价期限",
+        "label": "保价期限",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "保价店铺": {
+      "componentName": "TextField",
+      "sort": 18,
+      "rule": "",
+      "props": {
+        "id": "TextField_保价店铺",
+        "label": "保价店铺",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "采购目标及货返约定": {
+      "componentName": "TableField",
+      "sort": 19,
+      "rule": "",
+      "props": {
+        "staffStatusEnabled": false,
+        "holidayOptions": [],
+        "verticalPrint": true,
+        "bizAlias": "",
+        "id": "TableField_采购目标及货返约定",
+        "label": "采购目标及货返约定",
+        "push": [],
+        "actionName": "添加"
+      },
+      "children": [{
+          "componentName": "TextField",
+          "props": {
+            "id": "TextField_采购目标及货返约定_1",
+            "label": "条目名称",
+            "required": false,
+            "placeholder": "请输入"
+          }
+        },
+        {
+          "componentName": "TextareaField",
+          "props": {
+            "id": "TextareaField_采购目标及货返约定_2",
+            "label": "条目说明",
+            "required": false,
+            "placeholder": "请输入"
+          }
+        }
+      ]
+    },
+    "媒体平台": {
+      "componentName": "TextField",
+      "sort": 20,
+      "rule": "",
+      "props": {
+        "id": "TextField_媒体平台",
+        "label": "媒体平台",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "设备名称": {
+      "componentName": "TextField",
+      "sort": 21,
+      "rule": "",
+      "props": {
+        "id": "TextField_设备名称",
+        "label": "设备名称（型号）",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "设备数量": {
+      "componentName": "NumberField",
+      "sort": 22,
+      "rule": "",
+      "props": {
+        "id": "NumberField_设备数量",
+        "label": "设备数量",
+        "placeholder": "请输入数字",
+        "required": false,
+        "push": []
+      }
+    },
+    "服务交付时间": {
+      "componentName": "DDDateField",
+      "sort": 23,
+      "rule": "",
+      "props": {
+        "id": "DDDateField_服务交付时间",
+        "label": "服务交付时间",
+        "placeholder": "请选择",
+        "required": false,
+        "push": []
+      }
+    },
+    "服务期限": {
+      "componentName": "TextField",
+      "sort": 24,
+      "rule": "",
+      "props": {
+        "id": "TextField_服务期限",
+        "label": "服务期限",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "专利编号": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 25,
+      "rule": "",
+      "props": {
+        "id": "TextField_专利编号",
+        "label": "专利编号",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "专利权人": {
+      "componentName": "TextField",
+      "sort": 26,
+      "rule": "",
+      "props": {
+        "id": "TextField_专利权人",
+        "label": "专利权人",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "专利类型": {
+      "componentName": "DDSelectField",
+      "contractType":"zc",
+      "sort": 27,
+      "rule": "",
+      "props": {
+        "id": "DDSelectField_专利类型",
+        "label": "专利类型",
+        "placeholder": "请选择",
+        "required": false,
+        "push": [],
+        "options": [
+          "{\"value\":\"外观\",\"key\":\"option_0\"}",
+          "{\"value\":\"发明\",\"key\":\"option_1\"}",
+          "{\"value\":\"实用新型\",\"key\":\"option_2\"}"
+        ]
+      }
+    },
+    "专利号": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 28,
+      "rule": "",
+      "props": {
+        "id": "TextField_专利号",
+        "label": "专利号",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "申请日": {
+      "componentName": "DDDateField",
+      "contractType":"zc",
+      "sort": 29,
+      "rule": "",
+      "props": {
+        "id": "DDDateField_申请日",
+        "label": "申请日",
+        "placeholder": "请选择",
+        "required": false,
+        "push": []
+      }
+    },
+    "中文发明名称": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 30,
+      "rule": "",
+      "props": {
+        "id": "TextField_中文发明名称",
+        "label": "中文发明名称",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "法律状态": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 31,
+      "rule": "",
+      "props": {
+        "id": "TextField_法律状态",
+        "label": "法律状态",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "授权公告号": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 32,
+      "rule": "",
+      "props": {
+        "id": "TextField_授权公告号",
+        "label": "授权公告号",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "授权公告日": {
+      "componentName": "DDDateField",
+      "contractType":"zc",
+      "sort": 33,
+      "rule": "",
+      "props": {
+        "id": "DDDateField_授权公告日",
+        "label": "授权公告日",
+        "placeholder": "请选择",
+        "required": false,
+        "push": []
+      }
+    },
+    "国家": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 34,
+      "rule": "",
+      "props": {
+        "id": "TextField_国家",
+        "label": "国家",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "电子资料": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 35,
+      "rule": "",
+      "props": {
+        "id": "TextField_电子资料",
+        "label": "电子资料",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "纸质资料": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 36,
+      "rule": "",
+      "props": {
+        "id": "TextField_纸质资料",
+        "label": "纸质资料",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "取得方式": {
+      "componentName": "DDSelectField",
+      "contractType":"zc",
+      "sort": 37,
+      "rule": "",
+      "props": {
+        "id": "DDSelectField_取得方式",
+        "label": "取得方式",
+        "placeholder": "请选择",
+        "required": false,
+        "push": [],
+        "options": [
+          "{\"value\":\"原始取得\",\"key\":\"option_0\"}",
+          "{\"value\":\"继受取得\",\"key\":\"option_1\"}"
+        ]
+      }
+    },
+    "六视图": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 38,
+      "rule": "布尔：有；无",
+      "props": {
+        "id": "TextField_六视图",
+        "label": "六视图",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "代理机构": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 39,
+      "rule": "",
+      "props": {
+        "id": "TextField_代理机构",
+        "label": "代理机构",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "模具性质": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 40,
+      "rule": "下拉选项：公模；私模。支持输入文本，保存数据",
+      "type": "DDcompleteField",
+      "props": {
+        "id": "TextField_模具性质",
+        "label": "模具性质",
+        "placeholder": "请输入",
+        "required": false,
+        "push": [],
+        "options": [
+          "{\"value\":\"公模\",\"key\":\"option_0\"}",
+          "{\"value\":\"私模\",\"key\":\"option_1\"}"
+        ]
+      }
+    },
+    "国家性质文件": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 41,
+      "rule": "",
+      "props": {
+        "id": "TextField_国家性质文件",
+        "label": "国家性质文件",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "业务放弃产品": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 42,
+      "rule": "",
+      "props": {
+        "id": "TextField_业务放弃产品",
+        "label": "业务放弃产品",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "著作权人": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 43,
+      "rule": "下拉选项：系统内公司数据。支持输入文本，保存数据",
+      "type": "company",
+      "props": {
+        "id": "TextField_著作权人",
+        "label": "著作权人",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "著作权名称": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 44,
+      "rule": "",
+      "props": {
+        "id": "TextField_著作权名称",
+        "label": "著作权名称",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "著作类型": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 45,
+      "rule": "下拉选项：计算机软件著作权。支持输入文本，保存数据",
+      "type": "DDcompleteField",
+      "props": {
+        "id": "TextField_著作类型",
+        "label": "著作类型",
+        "placeholder": "请输入",
+        "required": false,
+        "push": [],
+        "options": [
+          "{\"value\":\"计算机软件著作权\",\"key\":\"option_0\"}"
+        ]
+      }
+    },
+    "受理号": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 46,
+      "rule": "",
+      "props": {
+        "id": "TextField_受理号",
+        "label": "受理号",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "下证时间": {
+      "componentName": "DDDateField",
+      "contractType":"zc",
+      "sort": 47,
+      "rule": "",
+      "props": {
+        "id": "DDDateField_下证时间",
+        "label": "下证时间",
+        "placeholder": "请选择",
+        "required": false,
+        "push": []
+      }
+    },
+    "登记日期": {
+      "componentName": "DDDateField",
+      "contractType":"zc",
+      "sort": 48,
+      "rule": "",
+      "props": {
+        "id": "DDDateField_登记日期",
+        "label": "登记日期",
+        "placeholder": "请选择",
+        "required": false,
+        "push": []
+      }
+    },
+    "开发完成日期": {
+      "componentName": "DDDateField",
+      "contractType":"zc",
+      "sort": 49,
+      "rule": "",
+      "props": {
+        "id": "DDDateField_开发完成日期",
+        "label": "开发完成日期",
+        "placeholder": "请选择",
+        "required": false,
+        "push": []
+      }
+    },
+    "首次发表日期": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 50,
+      "rule": "",
+      "props": {
+        "id": "TextField_首次发表日期",
+        "label": "首次发表日期",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "权利范围": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 51,
+      "rule": "",
+      "props": {
+        "id": "TextField_权利范围",
+        "label": "权利范围",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "登记号": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 52,
+      "rule": "",
+      "props": {
+        "id": "TextField_登记号",
+        "label": "登记号",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "证书号": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 53,
+      "rule": "",
+      "props": {
+        "id": "TextField_证书号",
+        "label": "证书号",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "内部编号": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 54,
+      "rule": "",
+      "props": {
+        "id": "TextField_内部编号",
+        "label": "内部编号",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "权利主体": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 55,
+      "rule": "下拉选项：系统内公司数据。支持输入文本，保存数据",
+      "type": "company",
+      "props": {
+        "id": "TextField_权利主体",
+        "label": "权利主体",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "商标样式": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 56,
+      "rule": "",
+      "props": {
+        "id": "TextField_商标样式",
+        "label": "商标样式",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "商标名称": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 57,
+      "rule": "",
+      "props": {
+        "id": "TextField_商标名称",
+        "label": "商标名称",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "商标类别": {
+      "componentName": "DDSelectField",
+      "contractType":"zc",
+      "sort": 58,
+      "rule": "",
+      "props": {
+        "id": "DDSelectField_商标类别",
+        "label": "商标类别",
+        "placeholder": "请选择",
+        "required": false,
+        "push": [],
+        "options": [
+          "{\"value\":\"1类\",\"key\":\"option_0\"}",
+          "{\"value\":\"2类\",\"key\":\"option_1\"}",
+          "{\"value\":\"3类……45类\",\"key\":\"option_2\"}"
+        ]
+      }
+    },
+    "商标小类型": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 59,
+      "rule": "",
+      "props": {
+        "id": "TextField_商标小类型",
+        "label": "商标小类型",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "产品小类别细则": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 60,
+      "rule": "",
+      "props": {
+        "id": "TextField_产品小类别细则",
+        "label": "产品小类别细则",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "商标号": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 61,
+      "rule": "",
+      "props": {
+        "id": "TextField_商标号",
+        "label": "商标号",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "国家及地区": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 62,
+      "rule": "",
+      "props": {
+        "id": "TextField_国家及地区",
+        "label": "国家及地区",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "申请日期": {
+      "componentName": "DDDateField",
+      "contractType":"zc",
+      "sort": 63,
+      "rule": "",
+      "props": {
+        "id": "DDDateField_申请日期",
+        "label": "申请日期",
+        "placeholder": "请选择",
+        "required": false,
+        "push": []
+      }
+    },
+    "注册日期": {
+      "componentName": "DDDateField",
+      "contractType":"zc",
+      "sort": 64,
+      "rule": "",
+      "props": {
+        "id": "DDDateField_注册日期",
+        "label": "注册日期",
+        "placeholder": "请选择",
+        "required": false,
+        "push": []
+      }
+    },
+    "业务状态": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 65,
+      "rule": "",
+      "props": {
+        "id": "TextField_业务状态",
+        "label": "业务状态",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "保护期限": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 66,
+      "rule": "",
+      "props": {
+        "id": "TextField_保护期限",
+        "label": "保护期限",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "被驳回商品": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 67,
+      "rule": "",
+      "props": {
+        "id": "TextField_被驳回商品",
+        "label": "被驳回商品",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "商标情况": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 68,
+      "rule": "下拉选项：抢注；障碍。支持输入文本，保存数据",
+      "type": "DDcompleteField",
+      "props": {
+        "id": "DDSelectField_商标情况",
+        "label": "商标情况",
+        "placeholder": "请选择",
+        "required": false,
+        "push": [],
+        "options": [
+          "{\"value\":\"抢注\",\"key\":\"option_0\"}",
+          "{\"value\":\"障碍\",\"key\":\"option_1\"}"
+        ]
+      }
+    },
+    "商标状态": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 69,
+      "rule": "",
+      "props": {
+        "id": "TextField_商标状态",
+        "label": "商标状态",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "申请公司": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 70,
+      "rule": "",
+      "props": {
+        "id": "TextField_申请公司",
+        "label": "申请公司",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "代理所商标方案": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 71,
+      "rule": "",
+      "props": {
+        "id": "TextField_代理所商标方案",
+        "label": "代理所商标方案",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "我司商标方案": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 72,
+      "rule": "",
+      "props": {
+        "id": "TextField_我司商标方案",
+        "label": "我司商标方案",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "确定商标方案": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 73,
+      "rule": "",
+      "props": {
+        "id": "TextField_确定商标方案",
+        "label": "确定商标方案",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "商标局显示状态": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 74,
+      "rule": "",
+      "props": {
+        "id": "TextField_商标局显示状态",
+        "label": "商标局显示状态",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "联名品牌": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 75,
+      "rule": "",
+      "props": {
+        "id": "TextField_联名品牌",
+        "label": "联名品牌",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "联名合同编号": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 76,
+      "rule": "",
+      "props": {
+        "id": "TextField_联名合同编号",
+        "label": "联名合同编号",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "联名合同名称": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 77,
+      "rule": "",
+      "props": {
+        "id": "TextField_联名合同名称",
+        "label": "联名合同名称",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "联名我方公司名称": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 78,
+      "rule": "",
+      "props": {
+        "id": "TextField_联名我方公司名称",
+        "label": "联名我方公司名称",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "联名对方公司名称": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 79,
+      "rule": "",
+      "props": {
+        "id": "TextField_联名对方公司名称",
+        "label": "联名对方公司名称",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "开票公司": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 80,
+      "rule": "",
+      "props": {
+        "id": "TextField_开票公司",
+        "label": "开票公司",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "联名合同内容": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 81,
+      "rule": "",
+      "props": {
+        "id": "TextField_联名合同内容",
+        "label": "联名合同内容",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "联名合同期限": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 82,
+      "rule": "",
+      "props": {
+        "id": "TextField_联名合同期限",
+        "label": "联名合同期限",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "联名合同备注": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 83,
+      "rule": "",
+      "props": {
+        "id": "TextField_联名合同备注",
+        "label": "联名合同备注",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "发起部门": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 84,
+      "rule": "",
+      "props": {
+        "id": "TextField_发起部门",
+        "label": "发起部门",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "联名合同金额": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 85,
+      "rule": "",
+      "props": {
+        "id": "TextField_联名合同金额",
+        "label": "联名合同金额",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "清货期风控条款": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 86,
+      "rule": "",
+      "props": {
+        "id": "TextField_清货期风控条款",
+        "label": "清货期风控条款",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "案件类型": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 87,
+      "rule": "",
+      "props": {
+        "id": "TextField_案件类型",
+        "label": "案件类型",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "原告": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 88,
+      "rule": "",
+      "props": {
+        "id": "TextField_原告",
+        "label": "原告",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "被告": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 89,
+      "rule": "",
+      "props": {
+        "id": "TextField_被告",
+        "label": "被告",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "侵权产品链接": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 90,
+      "rule": "",
+      "props": {
+        "id": "TextField_侵权产品链接",
+        "label": "侵权产品链接",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "诉讼第三人": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 91,
+      "rule": "",
+      "props": {
+        "id": "TextField_诉讼第三人",
+        "label": "诉讼第三人",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "法院": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 92,
+      "rule": "",
+      "props": {
+        "id": "TextField_法院",
+        "label": "法院",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "案由": {
+      "componentName": "TextareaField",
+      "contractType":"zc",
+      "sort": 93,
+      "rule": "",
+      "props": {
+        "id": "TextareaField_案由",
+        "label": "案由",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "案号": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 94,
+      "rule": "",
+      "props": {
+        "id": "TextField_案号",
+        "label": "案号",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "案件详情": {
+      "componentName": "TextareaField",
+      "contractType":"zc",
+      "sort": 95,
+      "rule": "",
+      "props": {
+        "id": "TextareaField_案件详情",
+        "label": "案件详情",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "诉讼请求": {
+      "componentName": "TextareaField",
+      "contractType":"zc",
+      "sort": 96,
+      "rule": "",
+      "props": {
+        "id": "TextareaField_诉讼请求",
+        "label": "诉讼请求",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "案件状态": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 97,
+      "rule": "",
+      "props": {
+        "id": "TextField_案件状态",
+        "label": "案件状态",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "律所": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 98,
+      "rule": "",
+      "props": {
+        "id": "TextField_律所",
+        "label": "律所",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "代理范围": {
+      "componentName": "TextareaField",
+      "contractType":"zc",
+      "sort": 99,
+      "rule": "",
+      "props": {
+        "id": "TextareaField_代理范围",
+        "label": "代理范围",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "与律所签订的合同主体": {
+      "componentName": "TextField",
+      "contractType":"zc",
+      "sort": 100,
+      "rule": "",
+      "props": {
+        "id": "TextField_与律所签订的合同主体",
+        "label": "与律所签订的合同主体",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    }
+  },
+  "财务变量": {
+    "基础服务费用": {
+      "componentName": "TextField",
+      "sort": 1,
+      "rule": "",
+      "props": {
+        "id": "TextField_基础服务费用",
+        "label": "基础服务费用（元）",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "固定佣金": {
+      "componentName": "TextField",
+      "sort": 2,
+      "rule": "",
+      "props": {
+        "id": "TextField_固定佣金",
+        "label": "固定佣金（元）",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "佣金比例": {
+      "componentName": "TextField",
+      "sort": 3,
+      "rule": "",
+      "props": {
+        "id": "TextField_佣金比例",
+        "label": "佣金比例（100%）",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "佣金计数基数": {
+      "componentName": "TextField",
+      "sort": 4,
+      "rule": "",
+      "props": {
+        "id": "TextField_佣金计数基数",
+        "label": "佣金计数基数",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "保底销售额": {
+      "componentName": "TextField",
+      "sort": 5,
+      "rule": "",
+      "props": {
+        "id": "TextField_保底销售额",
+        "label": "保底销售额（元）",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "支付方式": {
+      "componentName": "DDSelectField",
+      "sort": 6,
+      "rule": "",
+      "props": {
+        "id": "DDSelectField_支付方式",
+        "label": "支付方式",
+        "placeholder": "请选择",
+        "required": false,
+        "push": [],
+        "options": [
+          "{\"value\":\"微信\",\"key\":\"option_0\"}",
+          "{\"value\":\"支付宝\",\"key\":\"option_1\"}",
+          "{\"value\":\"银行转账\",\"key\":\"option_2\"}",
+          "{\"value\":\"现金\",\"key\":\"option_3\"}",
+          "{\"value\":\"POS\",\"key\":\"option_4\"}"
+        ]
+      }
+    },
+    "合同终止费用退还时间": {
+      "componentName": "DDDateField",
+      "sort": 7,
+      "rule": "",
+      "props": {
+        "id": "DDDateField_合同终止费用退还时间",
+        "label": "合同终止费用退还时间",
+        "placeholder": "请选择",
+        "required": false,
+        "push": []
+      }
+    },
+    "开票时间": {
+      "componentName": "DDDateField",
+      "sort": 8,
+      "rule": "",
+      "props": {
+        "id": "DDDateField_开票时间",
+        "label": "开票时间",
+        "placeholder": "请选择",
+        "required": false,
+        "push": []
+      }
+    },
+    "违约金": {
+      "componentName": "TextField",
+      "sort": 9,
+      "rule": "",
+      "props": {
+        "id": "TextField_违约金",
+        "label": "违约金（元）",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "其他收费": {
+      "componentName": "TextareaField",
+      "sort": 10,
+      "rule": "",
+      "props": {
+        "id": "TextareaField_其他收费",
+        "label": "其他收费",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "发票类型": {
+      "componentName": "DDSelectField",
+      "sort": 11,
+      "rule": "",
+      "props": {
+        "id": "DDSelectField_发票类型",
+        "label": "发票类型",
+        "placeholder": "请选择",
+        "required": false,
+        "push": [],
+        "options": [
+          "{\"value\":\"增值税普通发票\",\"key\":\"option_0\"}",
+          "{\"value\":\"增值税专用发票\",\"key\":\"option_1\"}"
+        ]
+      }
+    },
+    "发票税率": {
+      "componentName": "DDSelectField",
+      "sort": 12,
+      "rule": "",
+      "props": {
+        "id": "DDSelectField_发票税率",
+        "label": "发票税率",
+        "placeholder": "请选择",
+        "required": false,
+        "push": [],
+        "options": [
+          "{\"value\":\"6%\",\"key\":\"option_0\"}",
+          "{\"value\":\"13%\",\"key\":\"option_1\"}"
+        ]
+      }
+    },
+    "增值服务费": {
+      "componentName": "TextField",
+      "sort": 13,
+      "rule": "",
+      "props": {
+        "id": "TextField_增值服务费",
+        "label": "增值服务费（元）",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "费用对账时间": {
+      "componentName": "TextareaField",
+      "sort": 14,
+      "rule": "",
+      "props": {
+        "id": "TextareaField_费用对账时间",
+        "label": "费用对账时间",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "支付时间": {
+      "componentName": "TextareaField",
+      "sort": 15,
+      "rule": "",
+      "props": {
+        "id": "TextareaField_支付时间",
+        "label": "支付时间",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "履约保证金": {
+      "componentName": "TextField",
+      "sort": 16,
+      "rule": "",
+      "props": {
+        "id": "TextField_履约保证金",
+        "label": "履约保证金（元）",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "固定费用": {
+      "componentName": "TextField",
+      "sort": 17,
+      "rule": "",
+      "props": {
+        "id": "TextField_固定费用",
+        "label": "固定费用（元）",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "开票内容": {
+      "componentName": "TextareaField",
+      "sort": 18,
+      "rule": "",
+      "props": {
+        "id": "TextareaField_开票内容",
+        "label": "开票内容",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "直播费用对账时间": {
+      "componentName": "TextField",
+      "sort": 19,
+      "rule": "",
+      "props": {
+        "id": "TextField_直播费用对账时间",
+        "label": "直播费用对账时间",
+        "placeholder": "请输入",
+        "required": false,
+        "push": []
+      }
+    },
+    "费用明细": {
+      "componentName": "TableField",
+      "sort": 20,
+      "rule": "列表字段：费用名称（文本）；费用时间（日期）；金额（两位小数）",
+      "props": {
+        "staffStatusEnabled": false,
+        "holidayOptions": [],
+        "verticalPrint": true,
+        "bizAlias": "",
+        "id": "TableField_费用明细",
+        "label": "费用明细",
+        "push": [],
+        "actionName": "添加"
+      },
+      "children": [{
+          "componentName": "TextField",
+          "props": {
+            "id": "TextField_费用明细_1",
+            "label": "费用名称",
+            "required": false,
+            "placeholder": "请输入"
+          }
+        },
+        {
+          "componentName": "DDDateField",
+          "props": {
+            "id": "DDDateField_费用明细_2",
+            "label": "费用时间",
+            "required": false,
+            "placeholder": "请选择"
+          }
+        },
+        {
+          "componentName": "MoneyField",
+          "props": {
+            "id": "MoneyField_费用明细_3",
+            "label": "金额",
+            "required": false,
+            "placeholder": "请输入数字"
+          }
+        }
+      ]
+    },
+    "诉讼费用明细": {
+      "componentName": "TableField",
+      "contractType":"zc",
+      "sort": 21,
+      "rule": "列表字段：费用名称（文本）；总金额（两位小数）；律师费用（两位小数）；律师费用是否支付（布尔：是；否）；风险代理费用（两位小数）；案号（文本）",
+      "props": {
+        "staffStatusEnabled": false,
+        "holidayOptions": [],
+        "verticalPrint": true,
+        "bizAlias": "",
+        "id": "TableField_诉讼费用明细",
+        "label": "诉讼费用明细",
+        "push": [],
+        "actionName": "添加"
+      },
+      "children": [{
+          "componentName": "TextField",
+          "props": {
+            "id": "TextField_诉讼费用明细_1",
+            "label": "费用名称",
+            "required": false,
+            "placeholder": "请输入"
+          }
+        },
+        {
+          "componentName": "MoneyField",
+          "props": {
+            "id": "MoneyField_诉讼费用明细_2",
+            "label": "总金额",
+            "required": false,
+            "placeholder": "请输入数字"
+          }
+        },
+        {
+          "componentName": "MoneyField",
+          "props": {
+            "id": "MoneyField_诉讼费用明细_3",
+            "label": "律师费用",
+            "required": false,
+            "placeholder": "请输入数字"
+          }
+        },
+        {
+          "componentName": "DDSelectField",
+          "props": {
+            "id": "DDSelectField_诉讼费用明细_4",
+            "label": "律师费用是否支付",
+            "placeholder": "请选择",
+            "required": false,
+            "push": [],
+            "options": [
+              "{\"value\":\"是\",\"key\":\"option_0\"}",
+              "{\"value\":\"否\",\"key\":\"option_1\"}"
+            ]
+          }
+        },
+        {
+          "componentName": "MoneyField",
+          "props": {
+            "id": "MoneyField_诉讼费用明细_5",
+            "label": "风险代理费用",
+            "required": false,
+            "placeholder": "请输入数字"
+          }
+        },
+        {
+          "componentName": "TextField",
+          "props": {
+            "id": "TextField_诉讼费用明细_6",
+            "label": "案号",
+            "required": false,
+            "placeholder": "请输入"
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,27 @@
+---
+description: Vue3 中禁止把 props 对象赋给局部变量，避免丢失响应式
+globs: **/*.vue
+alwaysApply: false
+---
+
+# Vue3 props 响应式
+
+## 禁止
+
+```js
+const formState = props.formState  // ❌ computed/依赖可能不随 props 更新
+```
+
+## 正确
+
+- **`<script>`**：读写统一用 `props.xxx`（或 `toRef(props, 'formState')` 后在 script 里用 `formState.value`）
+- **`<template>`**：可直接用 prop 名 `formState`，或 `props.formState`（`defineProps` 已暴露）
+
+```js
+const contractTotal = computed(() => props.formState.amountTaxIncluded)
+```
+
+## 注意
+
+- 父组件传的是响应式对象时，子组件必须在 **computed / watch** 里读 `props`，不要读 setup 时拷贝的局部常量。
+- 修改嵌套字段（如 `props.formState.paymentPlans.push`）仍作用于同一对象，与是否赋值给局部变量无关；**展示与派生状态**才容易因拷贝丢响应。

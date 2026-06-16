@@ -1,0 +1,57 @@
+$spacing-scales: (
+  small: 8px,
+  medium: 16px,
+  large: 24px,
+  0: 0,
+  1: 10px,
+  2: 20px,
+  3: 30px,
+);
+
+$mg-single: (
+  't': margin-top,
+  'b': margin-bottom,
+  'l': margin-left,
+  'r': margin-right
+);
+
+$pd-single: (
+  't': padding-top,
+  'b': padding-bottom,
+  'l': padding-left,
+  'r': padding-right
+);
+
+@each $level, $val in $spacing-scales {
+  @each $suffix, $prop in $mg-single {
+    .mg-#{$suffix}-#{$level} {
+      #{$prop}: #{$val};
+    }
+  }
+
+  .mg-x-#{$level} {
+    margin-left: #{$val};
+    margin-right: #{$val};
+  }
+
+  .mg-y-#{$level} {
+    margin-top: #{$val};
+    margin-bottom: #{$val};
+  }
+
+  @each $suffix, $prop in $pd-single {
+    .pd-#{$suffix}-#{$level} {
+      #{$prop}: #{$val};
+    }
+  }
+
+  .pd-x-#{$level} {
+    padding-left: #{$val};
+    padding-right: #{$val};
+  }
+
+  .pd-y-#{$level} {
+    padding-top: #{$val};
+    padding-bottom: #{$val};
+  }
+}

@@ -1,0 +1,389 @@
+{
+  "result": {
+    "creatorUserId": "672762132224311512",
+    "gmtModified": "2026-04-29T15:14Z",
+    "formUuid": "FORM-68A4F17B-8D2D-4CE2-BF08-EF8B902B22B2",
+    "bizType": "",
+    "ownerIdType": "orgId",
+    "formCode": "PROC-F0D32EBA-7C5E-438F-A9EA-EEFA78D71CBF",
+    "icon": "https:\/\/img.alicdn.com\/imgextra\/i1\/O1CN015JHwkJ1DlkdrWfftk_!!6000000000257-0-tps-480-480.jpg",
+    "memo": "",
+    "engineType": 0,
+    "gmtCreate": "2026-04-24T14:02Z",
+    "schemaContent": {
+      "icon": "attendance_supplementary#green",
+      "title": "\u6d4b\u8bd5123",
+      "items": [{
+        "componentName": "TextField",
+        "props": {
+          "staffStatusEnabled": false,
+          "holidayOptions": [],
+          "id": "TextField_1E1PPBHD4LCSG",
+          "label": "\u5355\u884c\u8f93\u5165\u6846",
+          "placeholder": "\u8bf7\u8f93\u5165",
+          "required": false,
+          "push": []
+        }
+      }, {
+        "componentName": "DDSelectField",
+        "props": {
+          "staffStatusEnabled": false,
+          "holidayOptions": [],
+          "options": ["{\"value\":\"\u9009\u98791\",\"key\":\"option_0\"}", "{\"value\":\"\u9009\u98792\",\"key\":\"option_1\"}"],
+          "bizAlias": "",
+          "id": "DDSelectField_T1Z0KJ7J6QDC",
+          "label": "\u5355\u9009\u6846",
+          "placeholder": "\u8bf7\u9009\u62e9",
+          "required": false,
+          "push": [],
+          "fieldsInfo": "[]",
+          "behaviorLinkage": []
+        }
+      }, {
+        "componentName": "TextareaField",
+        "props": {
+          "staffStatusEnabled": false,
+          "holidayOptions": [],
+          "id": "TextareaField_WUYVPMFKATJ4",
+          "label": "\u591a\u884c\u8f93\u5165\u6846",
+          "placeholder": "\u8bf7\u8f93\u5165",
+          "required": false,
+          "push": []
+        }
+      }, {
+        "componentName": "NumberField",
+        "props": {
+          "staffStatusEnabled": false,
+          "holidayOptions": [],
+          "id": "NumberField_8LZTUQE2TKSG",
+          "label": "\u6570\u5b57\u8f93\u5165\u6846",
+          "placeholder": "\u8bf7\u8f93\u5165\u6570\u5b57",
+          "required": false,
+          "push": []
+        }
+      }, {
+        "componentName": "DDSelectField",
+        "props": {
+          "staffStatusEnabled": false,
+          "holidayOptions": [],
+          "options": ["{\"value\":\"\u9009\u98791\",\"key\":\"option_0\"}", "{\"value\":\"\u9009\u98792\",\"key\":\"option_1\"}", "{\"value\":\"\u9009\u98793\",\"key\":\"option_2\"}"],
+          "id": "DDSelectField_1UTZY2PLJU5TS",
+          "label": "\u5355\u9009\u6846",
+          "placeholder": "\u8bf7\u9009\u62e9",
+          "required": false,
+          "push": []
+        }
+      }, {
+        "componentName": "DDMultiSelectField",
+        "props": {
+          "staffStatusEnabled": false,
+          "holidayOptions": [],
+          "options": ["{\"value\":\"\u9009\u98791\",\"key\":\"option_0\"}", "{\"value\":\"\u9009\u98792\",\"key\":\"option_1\"}", "{\"value\":\"\u9009\u98793\",\"key\":\"option_2\"}"],
+          "id": "DDMultiSelectField_1G18C8R2329KW",
+          "label": "\u591a\u9009\u6846",
+          "placeholder": "\u8bf7\u9009\u62e9",
+          "required": false,
+          "push": []
+        }
+      }, {
+        "componentName": "DDDateField",
+        "props": {
+          "staffStatusEnabled": false,
+          "unit": "\u5929",
+          "holidayOptions": [],
+          "format": "yyyy-MM-dd",
+          "id": "DDDateField_LOSQEVPN9EDC",
+          "label": "\u65e5\u671f",
+          "placeholder": "\u8bf7\u9009\u62e9",
+          "required": false,
+          "push": []
+        }
+      }, {
+        "componentName": "DDDateRangeField",
+        "props": {
+          "staffStatusEnabled": false,
+          "duration": false,
+          "unit": "\u5929",
+          "holidayOptions": [],
+          "format": "yyyy-MM-dd",
+          "id": "DDDateRangeField_8VG7W95BVJSW",
+          "label": "[\"\u5f00\u59cb\u65f6\u95f4\",\"\u7ed3\u675f\u65f6\u95f4\"]",
+          "placeholder": "\u8bf7\u9009\u62e9",
+          "durationLabel": "\u65f6\u957f",
+          "required": false,
+          "push": []
+        }
+      }, {
+        "componentName": "TextNote",
+        "props": {
+          "staffStatusEnabled": false,
+          "holidayOptions": [],
+          "notPrint": "0",
+          "id": "TextNote_1B6M78NX2ZRI8",
+          "push": []
+        }
+      }, {
+        "componentName": "IdCardField",
+        "props": {
+          "staffStatusEnabled": false,
+          "holidayOptions": [],
+          "id": "IdCardField_XUPFLEIQO80",
+          "label": "\u8eab\u4efd\u8bc1",
+          "placeholder": "\u8bf7\u8f93\u5165",
+          "required": false,
+          "push": []
+        }
+      }, {
+        "componentName": "PhoneField",
+        "props": {
+          "staffStatusEnabled": false,
+          "holidayOptions": [],
+          "id": "PhoneField_OYCBMA68VYF4",
+          "label": "\u7535\u8bdd",
+          "placeholder": "\u8bf7\u8f93\u5165",
+          "required": false,
+          "push": []
+        }
+      }, {
+        "componentName": "CascadeField",
+        "props": {
+          "staffStatusEnabled": false,
+          "holidayOptions": [],
+          "bizAlias": "",
+          "id": "CascadeField_JQAFHGM7TQF4",
+          "label": "\u4ea7\u54c1\u5206\u7c7b",
+          "placeholder": "\u8bf7\u8f93\u5165",
+          "push": []
+        }
+      }, {
+        "componentName": "DDAIField",
+        "props": {
+          "staffStatusEnabled": false,
+          "holidayOptions": [],
+          "id": "DDAIField_11GGG1B7C9340",
+          "label": "AI\u63a7\u4ef6",
+          "push": []
+        }
+      }, {
+        "componentName": "DDPhotoField",
+        "props": {
+          "staffStatusEnabled": false,
+          "holidayOptions": [],
+          "id": "DDPhotoField_LRN4WLR788W0",
+          "label": "\u56fe\u7247",
+          "required": false,
+          "push": []
+        }
+      }, {
+        "children": [{
+          "componentName": "TextField",
+          "props": {
+            "id": "TextField_1FRWH99DT9ZB4",
+            "label": "\u5355\u884c\u8f93\u5165\u6846",
+            "required": false
+          }
+        }, {
+          "componentName": "TextField",
+          "props": {
+            "id": "TextField_1WM3XXV17AVB4",
+            "label": "\u5355\u884c\u8f93\u5165\u6846",
+            "required": false
+          }
+        }, {
+          "componentName": "TextareaField",
+          "props": {
+            "id": "TextareaField_XLQ20A22V75S",
+            "label": "\u591a\u884c\u8f93\u5165\u6846",
+            "required": false
+          }
+        }],
+        "componentName": "TableField",
+        "props": {
+          "staffStatusEnabled": false,
+          "holidayOptions": [],
+          "verticalPrint": true,
+          "bizAlias": "",
+          "id": "TableField_5EB71OSYF280",
+          "label": "\u8868\u683c",
+          "push": [],
+          "actionName": "\u6dfb\u52a0"
+        }
+      }, {
+        "componentName": "MoneyField",
+        "props": {
+          "staffStatusEnabled": false,
+          "holidayOptions": [],
+          "notUpper": "0",
+          "id": "MoneyField_23MXGO2SXG3R4",
+          "label": "\u91d1\u989d\uff08\u5143\uff09",
+          "placeholder": "\u8bf7\u8f93\u5165\u91d1\u989d",
+          "required": false,
+          "push": []
+        }
+      }, {
+        "componentName": "DDAttachment",
+        "props": {
+          "staffStatusEnabled": false,
+          "holidayOptions": [],
+          "id": "DDAttachment_YHNX29FSIOSG",
+          "label": "\u9644\u4ef6",
+          "required": false,
+          "push": []
+        }
+      }, {
+        "componentName": "SignatureField",
+        "props": {
+          "staffStatusEnabled": false,
+          "holidayOptions": [],
+          "id": "SignatureField_MBW2CM99A4G0",
+          "label": "\u624b\u5199\u7b7e\u540d",
+          "required": false,
+          "push": []
+        }
+      }, {
+        "componentName": "ExternalContactField",
+        "props": {
+          "staffStatusEnabled": false,
+          "holidayOptions": [],
+          "id": "ExternalContactField_7W77QYI6VXFK",
+          "label": "\u5916\u90e8\u8054\u7cfb\u4eba",
+          "placeholder": "\u8bf7\u9009\u62e9",
+          "required": false,
+          "push": []
+        }
+      }, {
+        "componentName": "InnerContactField",
+        "props": {
+          "staffStatusEnabled": false,
+          "holidayOptions": [],
+          "id": "InnerContactField_TIXZGJHR5Z40",
+          "label": "\u8054\u7cfb\u4eba",
+          "placeholder": "\u8bf7\u9009\u62e9",
+          "choice": 0,
+          "required": false,
+          "push": []
+        }
+      }, {
+        "componentName": "DepartmentField",
+        "props": {
+          "staffStatusEnabled": false,
+          "holidayOptions": [],
+          "id": "DepartmentField_19I5K0DVR2U4G",
+          "label": "\u90e8\u95e8",
+          "placeholder": "\u8bf7\u9009\u62e9",
+          "required": false,
+          "push": []
+        }
+      }, {
+        "componentName": "IndustryDepartmentField",
+        "props": {
+          "staffStatusEnabled": false,
+          "holidayOptions": [],
+          "id": "IndustryDepartmentField_1R12QN2GV1CE8",
+          "label": "\u884c\u4e1a\u901a\u8baf\u5f55\u90e8\u95e8",
+          "placeholder": "\u8bf7\u9009\u62e9",
+          "required": false,
+          "push": []
+        }
+      }, {
+        "componentName": "TimeAndLocationField",
+        "props": {
+          "staffStatusEnabled": false,
+          "holidayOptions": [],
+          "id": "TimeAndLocationField_1HXH0M0Q7ZPQ8",
+          "label": "[\"\u5f53\u524d\u65f6\u95f4\",\"\u5f53\u524d\u5730\u70b9\"]",
+          "required": false,
+          "push": []
+        }
+      }, {
+        "componentName": "CalculateField",
+        "props": {
+          "staffStatusEnabled": false,
+          "holidayOptions": [],
+          "notUpper": "0",
+          "id": "CalculateField_GXZK3ECTNW8W",
+          "label": "\u8ba1\u7b97\u516c\u5f0f",
+          "placeholder": "\u81ea\u52a8\u8ba1\u7b97\u6570\u503c",
+          "push": []
+        }
+      }, {
+        "componentName": "RelateField",
+        "props": {
+          "staffStatusEnabled": false,
+          "holidayOptions": [],
+          "notPrint": "1",
+          "id": "RelateField_HG74QG3T0B9C",
+          "label": "\u5173\u8054\u5ba1\u6279\u5355",
+          "placeholder": "\u8bf7\u9009\u62e9",
+          "required": false,
+          "push": []
+        }
+      }, {
+        "componentName": "AddressField",
+        "props": {
+          "staffStatusEnabled": false,
+          "holidayOptions": [],
+          "id": "AddressField_1CYVT5JQLERK0",
+          "label": "\u7701\u5e02\u533a",
+          "required": false,
+          "push": []
+        }
+      }, {
+        "componentName": "StarRatingField",
+        "props": {
+          "staffStatusEnabled": false,
+          "holidayOptions": [],
+          "id": "StarRatingField_1DGOT6EVH7YM8",
+          "label": "\u8bc4\u5206",
+          "placeholder": "\u8bf7\u8f93\u5165",
+          "required": false,
+          "push": []
+        }
+      }, {
+        "componentName": "InvoiceField",
+        "props": {
+          "staffStatusEnabled": false,
+          "holidayOptions": [],
+          "appId": 78641,
+          "bizAlias": "",
+          "id": "InvoiceField_1L6XY3YWGTERK",
+          "label": "\u53d1\u7968",
+          "required": false,
+          "push": []
+        }
+      }, {
+        "componentName": "RecipientAccountField",
+        "props": {
+          "staffStatusEnabled": false,
+          "holidayOptions": [],
+          "id": "RecipientAccountField_8JGCTNB3K268",
+          "label": "\u6536\u6b3e\u8d26\u6237",
+          "placeholder": "\u8bf7\u9009\u62e9",
+          "required": true,
+          "push": []
+        }
+      }, {
+        "componentName": "DepartmentField",
+        "props": {
+          "staffStatusEnabled": false,
+          "holidayOptions": [],
+          "id": "DepartmentField_1QLY8FD6ISQO0",
+          "label": "\u90e8\u95e8",
+          "placeholder": "\u8bf7\u9009\u62e9",
+          "required": false,
+          "push": []
+        }
+      }]
+    },
+    "appUuid": "dingc5b16c82b7f25e64acaaa37764f94726",
+    "appType": 1,
+    "visibleRange": "PRIVATE",
+    "listOrder": 85,
+    "name": "\u6d4b\u8bd5123",
+    "customSetting": {
+      "securityMode": "0"
+    },
+    "status": "PUBLISHED",
+    "procType": "inner"
+  }
+}
