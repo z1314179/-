@@ -5,6 +5,21 @@
       <template v-if="column.key === 'line'">
         <ApprovalTimelineLine :state="record.statusCode || -1" />
       </template>
+      <template v-else-if="column.key === 'remark'">
+        <div class="approval-remark">
+          <div v-if="record.remark && record.remark !== '-'">{{ record.remark }}</div>
+          <div v-else-if="!record.images?.length">-</div>
+          <div v-if="record.images?.length" class="approval-remark__images">
+            <a-image
+              v-for="(image, index) in record.images"
+              :key="`${record.id}-image-${index}`"
+              :src="image"
+              :width="48"
+              :height="48"
+            />
+          </div>
+        </div>
+      </template>
     </template>
   </a-table>
 </template>
@@ -91,5 +106,12 @@ const columns = [
       padding: 0 !important;
     }
   }
+}
+
+.approval-remark__images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
 }
 </style>

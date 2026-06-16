@@ -108,6 +108,7 @@ function buildDingApprovalFlow(input, extraUserNameMap = {}, section = 'current'
         displayApprover: getName(record.userId, userNameMap),
         date: record.date,
         remark: record.remark || '',
+        images: record.images,
         statusCode: 2,
       }))
       continue
@@ -124,6 +125,7 @@ function buildDingApprovalFlow(input, extraUserNameMap = {}, section = 'current'
         displayApprover: formatAppendRecordDisplay(record, appendTasks, userNameMap, operationRecords),
         date: record.date,
         remark: record.remark || '',
+        images: record.images,
         statusCode: 2,
       }))
 
@@ -156,6 +158,7 @@ function buildDingApprovalFlow(input, extraUserNameMap = {}, section = 'current'
         displayApprover: task ? formatExecuteTaskDisplay(task, userNameMap) : formatOperationRecordDisplay(record, userNameMap),
         date: task?.finishTime || record.date,
         remark: record.remark || '',
+        images: record.images,
         statusCode: getOperationRecordStatusCode(record, task),
       }))
       continue
@@ -229,6 +232,7 @@ function createProcessCcRecordItem(record, userNameMap, section) {
     displayApprover: displayApprover || '未识别',
     date: record.date,
     remark: record.remark || '',
+    images: record.images,
     statusCode: 2,
   })
 }
@@ -241,6 +245,7 @@ function createRedirectTaskRecordItem(record, tasks, userNameMap, section) {
     displayApprover: formatRedirectTaskDisplay(record, tasks, userNameMap),
     date: record.date,
     remark: record.remark || '',
+    images: record.images,
     statusCode: 2,
   })
 }
@@ -253,6 +258,7 @@ function createRedirectProcessRecordItem(record, tasks, operationRecords, workfl
     displayApprover: formatRedirectProcessDisplay(record, tasks, operationRecords, workflowActivityRules, userNameMap),
     date: record.date,
     remark: record.remark || '',
+    images: record.images,
     statusCode: getOperationRecordStatusCode(record),
   })
 }
@@ -315,6 +321,7 @@ function createOperationRecordItem(record, userNameMap, section) {
     displayApprover: formatOperationRecordDisplay(record, userNameMap),
     date: record.date,
     remark: record.remark || '',
+    images: record.images,
     statusCode: getOperationRecordStatusCode(record),
   })
 }
@@ -1007,7 +1014,7 @@ function shouldShowOperateDate(statusCode) {
   return statusCode !== 0 && statusCode !== 1
 }
 
-function createRecordItem({ section, id, status, displayApprover, date, remark, statusCode = 2 }) {
+function createRecordItem({ section, id, status, displayApprover, date, remark, images, statusCode = 2 }) {
   const showDate = shouldShowOperateDate(statusCode)
 
   return {
@@ -1016,10 +1023,20 @@ function createRecordItem({ section, id, status, displayApprover, date, remark, 
     displayApprover: displayApprover || '',
     status: status || '',
     remark: remark || '',
+    images: normalizeRecordImages(images),
     date: showDate ? (date || '') : '',
     displayDate: showDate ? formatTime(date) : '',
     statusCode,
   }
+}
+
+function normalizeRecordImages(images) {
+  return (images || [])
+    .map(image => {
+      if (typeof image === 'string') return image
+      return image?.url || image?.previewUrl || image?.downloadUrl || image?.fileUrl || image?.mediaUrl || ''
+    })
+    .filter(Boolean)
 }
 
 function itemsToTableRows(items) {
@@ -1031,6 +1048,7 @@ function itemsToTableRows(items) {
     displayApprover: item.displayApprover || '',
     status: item.status || '',
     remark: item.remark || '-',
+    images: item.images || [],
   }))
 }
 
