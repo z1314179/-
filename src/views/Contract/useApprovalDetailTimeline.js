@@ -118,12 +118,13 @@ function buildDingApprovalFlow(input, extraUserNameMap = {}, section = 'current'
 
     if (isAppendRecord(record)) {
       const relation = appendRelations.find(item => item.record === record)
+      const appendTasks = relation ? relation.tasks : []
 
       items.push(createRecordItem({
         section,
         id: record.id,
         status: getAppendStatusName(record),
-        displayApprover: getName(record.userId, userNameMap),
+        displayApprover: formatAppendRecordDisplay(record, appendTasks, userNameMap),
         date: record.date,
         remark: record.remark || '',
         statusCode: 2,
@@ -155,7 +156,7 @@ function buildDingApprovalFlow(input, extraUserNameMap = {}, section = 'current'
         section,
         id: record.id || task.taskId,
         status: getExecuteStatusName(appendType, record.showName),
-        displayApprover: getName(task.userId, userNameMap),
+        displayApprover: `${getName(task.userId, userNameMap)}（${getResultText(task)}）`,
         date: task.finishTime || record.date,
         remark: record.remark || '',
         statusCode: task.result === 'REFUSE' ? 3 : 2,
@@ -188,6 +189,16 @@ function getAppendStatusName(record) {
   const showName = record.showName || '审批人'
   const appendTypeText = getAppendTypeText(record.type)
   return appendTypeText ? `${showName}（${appendTypeText}）` : showName
+}
+
+function formatAppendRecordDisplay(record, appendTasks, userNameMap) {
+  const operatorName = getName(record.userId, userNameMap)
+  const appendTypeText = getAppendTypeText(record.type)
+  const appendNames = appendTasks.length > 0
+    ? appendTasks.map(task => getName(task.userId, userNameMap)).join('、')
+    : '未识别'
+
+  return `${operatorName} ${appendTypeText}：${appendNames}`
 }
 
 function getAppendTypeText(recordType) {
@@ -367,6 +378,16 @@ function formatPendingUsers(names, method) {
   return `${displayNames} ${getApprovalMethodText(method)}`
 }
 
+function formatTaskUsersWithResult(tasks, userNameMap, method) {
+  const displayNames = (tasks || [])
+    .map(task => `${getName(task.userId, userNameMap)}（${getResultText(task)}）`)
+    .join('、') || '未识别'
+
+  if ((tasks || []).length <= 1) return displayNames
+
+  return `${displayNames} ${getApprovalMethodText(method)}`
+}
+
 function getRulesByForecastOrder(workflowForecastNodes, workflowActivityRules) {
   const orderMap = new Map()
 
@@ -520,10 +541,7 @@ function shouldRenderAppendGroup(relation) {
 function renderAppendGroup(items, relation, userNameMap, section) {
   const tasks = relation.groupTasks || relation.tasks || []
   const status = getAppendStatusName(relation.record)
-  const displayApprover = formatPendingUsers(
-    tasks.map(task => getName(task.userId, userNameMap)),
-    'OR',
-  )
+  const displayApprover = formatTaskUsersWithResult(tasks, userNameMap, 'OR')
 
   const statusCode = resolveAppendGroupStatusCode(tasks)
 
