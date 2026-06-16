@@ -107,7 +107,7 @@ function buildDingApprovalFlow(input, extraUserNameMap = {}, section = 'current'
       items.push(createRecordItem({
         section,
         id: record.id,
-        status: '发起申请',
+        status: record.showName || '发起申请',
         displayApprover: getName(record.userId, userNameMap),
         date: record.date,
         remark: record.remark || '',
@@ -118,16 +118,12 @@ function buildDingApprovalFlow(input, extraUserNameMap = {}, section = 'current'
 
     if (isAppendRecord(record)) {
       const relation = appendRelations.find(item => item.record === record)
-      const appendTasks = relation ? relation.tasks : []
-      const appendNames = appendTasks.length > 0
-        ? appendTasks.map(t => getName(t.userId, userNameMap)).join('、')
-        : '未识别'
 
       items.push(createRecordItem({
         section,
         id: record.id,
-        status: '审批人',
-        displayApprover: `${getName(record.userId, userNameMap)}（加签）添加审批人：${appendNames}`,
+        status: getAppendStatusName(record),
+        displayApprover: getName(record.userId, userNameMap),
         date: record.date,
         remark: record.remark || '',
         statusCode: 2,
@@ -158,8 +154,8 @@ function buildDingApprovalFlow(input, extraUserNameMap = {}, section = 'current'
       items.push(createRecordItem({
         section,
         id: record.id || task.taskId,
-        status: getExecuteStatusName(appendType),
-        displayApprover: `${getName(task.userId, userNameMap)}（${getResultText(task)}）`,
+        status: getExecuteStatusName(appendType, record.showName),
+        displayApprover: getName(task.userId, userNameMap),
         date: task.finishTime || record.date,
         remark: record.remark || '',
         statusCode: task.result === 'REFUSE' ? 3 : 2,
@@ -183,16 +179,27 @@ function buildDingApprovalFlow(input, extraUserNameMap = {}, section = 'current'
   return items
 }
 
-function getExecuteStatusName(appendType) {
-  if (appendType === 'APPEND_TASK_BEFORE') return '审批人（前加签）'
-  if (appendType === 'APPEND_TASK_AFTER') return '审批人（后加签）'
-  return '审批人'
+function getExecuteStatusName(appendType, showName = '审批人') {
+  const appendTypeText = getAppendTypeText(appendType)
+  return appendTypeText ? `${showName}（${appendTypeText}）` : showName
+}
+
+function getAppendStatusName(record) {
+  const showName = record.showName || '审批人'
+  const appendTypeText = getAppendTypeText(record.type)
+  return appendTypeText ? `${showName}（${appendTypeText}）` : showName
+}
+
+function getAppendTypeText(recordType) {
+  if (recordType === 'APPEND_TASK_BEFORE') return '前加签'
+  if (recordType === 'APPEND_TASK_AFTER') return '后加签'
+  return ''
 }
 
 function createProcessCcRecordItem(record, userNameMap, section) {
   const ccUserIds = record.ccUserIds || []
   const displayApprover = ccUserIds
-    .map(userId => `${getName(userId, userNameMap)}（已抄送）`)
+    .map(userId => getName(userId, userNameMap))
     .join('、')
 
   return createRecordItem({
@@ -201,7 +208,7 @@ function createProcessCcRecordItem(record, userNameMap, section) {
     status: record.showName || '抄送人',
     displayApprover: displayApprover || '未识别',
     date: record.date,
-    remark: record.remark || '已抄送',
+    remark: record.remark || '',
     statusCode: 2,
   })
 }
@@ -251,18 +258,18 @@ function renderForecastUnfinishedNodes({
 function renderGeneratedOriginalNode(items, rule, nodeTasks, userNameMap, section) {
   const method = getApprovalMethod(rule)
   const statusCode = nodeTasks.some(task => task.status === 'RUNNING') ? 1 : 0
+  const activityName = rule.activityName || '审批人'
+  const displayApprover = formatPendingUsers(
+    nodeTasks.map(task => getName(task.userId, userNameMap)),
+    method,
+  )
 
   if (method === 'ONE_BY_ONE') {
-    const order = nodeTasks.map(task => getName(task.userId, userNameMap)).join(' -> ')
-    const taskDetails = nodeTasks
-      .map(task => `${getName(task.userId, userNameMap)}：${getTaskStatusText(task)}`)
-      .join('、')
-
     items.push(createRecordItem({
       section,
       id: rule.activityId,
-      status: '审批人 依次审批',
-      displayApprover: `${nodeTasks.length}人依次审批；${order}；${taskDetails}`,
+      status: activityName,
+      displayApprover,
       date: '',
       remark: '',
       statusCode,
@@ -271,15 +278,11 @@ function renderGeneratedOriginalNode(items, rule, nodeTasks, userNameMap, sectio
   }
 
   if (method === 'OR') {
-    const taskDetails = nodeTasks
-      .map(task => `${getName(task.userId, userNameMap)}：${getTaskStatusText(task)}`)
-      .join('、')
-
     items.push(createRecordItem({
       section,
       id: rule.activityId,
-      status: '审批人 或签',
-      displayApprover: `${nodeTasks.length}人审批中，1人同意即可通过；${taskDetails}`,
+      status: activityName,
+      displayApprover,
       date: '',
       remark: '',
       statusCode,
@@ -287,15 +290,11 @@ function renderGeneratedOriginalNode(items, rule, nodeTasks, userNameMap, sectio
     return
   }
 
-  const taskDetails = nodeTasks
-    .map(task => `${getName(task.userId, userNameMap)}：${getTaskStatusText(task)}`)
-    .join('、')
-
   items.push(createRecordItem({
     section,
     id: rule.activityId,
-    status: '审批人 会签',
-    displayApprover: `${nodeTasks.length}人审批，需要全部处理；${taskDetails}`,
+    status: activityName,
+    displayApprover,
     date: '',
     remark: '',
     statusCode,
@@ -306,20 +305,17 @@ function renderNotStartedOriginalNode(items, rule, userNameMap, section) {
   const actioners = rule.activityActioners || []
   const method = getApprovalMethod(rule)
   const activityName = rule.activityName || '审批人'
-  const personTexts = actioners
-    .map(user => `${getName(user.userId, userNameMap, user.name)}：未开始`)
-    .join('、')
+  const displayApprover = formatPendingUsers(
+    actioners.map(user => getName(user.userId, userNameMap, user.name)),
+    method,
+  )
 
   if (method === 'ONE_BY_ONE') {
-    const order = actioners
-      .map(user => getName(user.userId, userNameMap, user.name))
-      .join(' -> ')
-
     items.push(createRecordItem({
       section,
       id: rule.activityId,
-      status: `${activityName} 依次审批`,
-      displayApprover: `${actioners.length}人依次审批；${order}；${personTexts}`,
+      status: activityName,
+      displayApprover,
       date: '',
       remark: '',
       statusCode: 0,
@@ -331,8 +327,8 @@ function renderNotStartedOriginalNode(items, rule, userNameMap, section) {
     items.push(createRecordItem({
       section,
       id: rule.activityId,
-      status: `${activityName} 或签`,
-      displayApprover: `${actioners.length}人审批中，1人同意即可通过；${personTexts}`,
+      status: activityName,
+      displayApprover,
       date: '',
       remark: '',
       statusCode: 0,
@@ -345,7 +341,7 @@ function renderNotStartedOriginalNode(items, rule, userNameMap, section) {
       section,
       id: rule.activityId,
       status: activityName,
-      displayApprover: personTexts,
+      displayApprover,
       date: '',
       remark: '',
       statusCode: 0,
@@ -356,12 +352,19 @@ function renderNotStartedOriginalNode(items, rule, userNameMap, section) {
   items.push(createRecordItem({
     section,
     id: rule.activityId,
-    status: `${activityName} 会签`,
-    displayApprover: `${actioners.length}人审批，需要全部处理；${personTexts}`,
+    status: activityName,
+    displayApprover,
     date: '',
     remark: '',
     statusCode: 0,
   }))
+}
+
+function formatPendingUsers(names, method) {
+  const displayNames = (names || []).filter(Boolean).join('、') || '未识别'
+  if ((names || []).length <= 1) return displayNames
+
+  return `${displayNames} ${getApprovalMethodText(method)}`
 }
 
 function getRulesByForecastOrder(workflowForecastNodes, workflowActivityRules) {
@@ -516,19 +519,11 @@ function shouldRenderAppendGroup(relation) {
 
 function renderAppendGroup(items, relation, userNameMap, section) {
   const tasks = relation.groupTasks || relation.tasks || []
-  const hasRunning = tasks.some(task => task.status === 'RUNNING')
-  const appendTypeName = relation.record.type === 'APPEND_TASK_BEFORE' ? '前加签' : '后加签'
-
-  let status
-  if (hasRunning && tasks.length === 1) {
-    status = '审批人 或签'
-  } else {
-    status = `审批人（${appendTypeName}） 或签`
-  }
-
-  const displayApprover = tasks
-    .map(task => `${getName(task.userId, userNameMap)}：${getTaskStatusText(task)}`)
-    .join('、')
+  const status = getAppendStatusName(relation.record)
+  const displayApprover = formatPendingUsers(
+    tasks.map(task => getName(task.userId, userNameMap)),
+    'OR',
+  )
 
   const statusCode = resolveAppendGroupStatusCode(tasks)
 
@@ -619,6 +614,12 @@ function buildUserNameMap({
 
 function getApprovalMethod(rule) {
   return rule?.workflowActor?.approvalMethod || ''
+}
+
+function getApprovalMethodText(method) {
+  if (method === 'ONE_BY_ONE') return '依次审批'
+  if (method === 'OR') return '或签'
+  return '会签'
 }
 
 function isAppendRecord(record) {
