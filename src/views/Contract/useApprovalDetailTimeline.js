@@ -693,16 +693,7 @@ export function useApprovalDetailTimeline() {
   const getApproverDisplay = (record) => record?.displayApprover || ''
 
   const getData = async (input) => {
-    try {
-      const { data } = await getDingUserList()
-      dingUserListRef.value = (data || []).reduce((acc, item) => {
-        acc[String(item.userid)] = item.name
-        return acc
-      }, {})
-    } catch (err) {}
-
-    const result = buildDingApprovalFlowWithHistories(input, dingUserListRef.value)
-    approvalTableData.value = buildTableData(result)
+    console.log('[useApprovalDetailTimeline] getData input:', input)
   }
 
   return {
