@@ -144,8 +144,8 @@ function buildDingApprovalFlow(input, extraUserNameMap = {}, section = 'current'
       items.push(createRecordItem({
         section,
         id: record.id || task.taskId,
-        status: record.showName || '审批人',
-        displayApprover: formatExecuteTaskDisplay(task, appendType, userNameMap),
+        status: getApprovalStatusName(record.showName, appendType),
+        displayApprover: formatExecuteTaskDisplay(task, userNameMap),
         date: task.finishTime || record.date,
         remark: record.remark || '',
         statusCode: task.result === 'REFUSE' ? 3 : 2,
@@ -177,11 +177,14 @@ function buildDingApprovalFlow(input, extraUserNameMap = {}, section = 'current'
   return items
 }
 
-function formatExecuteTaskDisplay(task, appendType, userNameMap) {
+function getApprovalStatusName(showName = '审批人', appendType = '') {
   const appendTypeText = getAppendTypeText(appendType)
-  const displayName = `${getName(task.userId, userNameMap)}（${getResultText(task)}）`
 
-  return appendTypeText ? `${appendTypeText}：${displayName}` : displayName
+  return appendTypeText ? `${showName}（${appendTypeText}）` : showName
+}
+
+function formatExecuteTaskDisplay(task, userNameMap) {
+  return `${getName(task.userId, userNameMap)}（${getResultText(task)}）`
 }
 
 function formatAppendRecordDisplay(record, appendTasks, userNameMap, operationRecords) {
@@ -638,12 +641,11 @@ function shouldRenderAppendGroup(relation) {
 
 function renderAppendGroup(items, relation, userNameMap, section) {
   const tasks = getAppendPendingTasks(relation.tasks)
-  const status = relation.record.showName || '审批人'
-  const appendTypeText = getAppendTypeText(relation.record.type)
+  const status = getApprovalStatusName(relation.record.showName, relation.record.type)
 
   const displayTasks = getDisplayTasks(tasks)
   const statusCode = resolveAppendGroupStatusCode(displayTasks)
-  const displayApprover = `${appendTypeText}：${formatAppendGroupUsers(displayTasks, userNameMap, 'ALL', statusCode)}`
+  const displayApprover = formatAppendGroupUsers(displayTasks, userNameMap, 'ALL', statusCode)
 
   items.push(createRecordItem({
     section,
