@@ -23,6 +23,8 @@ watch(
   () => props.workflowForeData,
   async (v) => {
     if (v && typeof v === 'object' && Object.keys(v).length) {
+      console.log(JSON.stringify(v));
+
       await getData(v)
     }
   },
