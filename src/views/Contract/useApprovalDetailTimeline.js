@@ -109,6 +109,7 @@ function buildDingApprovalFlow(input, extraUserNameMap = {}, section = 'current'
         date: record.date,
         remark: record.remark || '',
         images: record.images,
+        attachments: record.attachments,
         statusCode: 2,
       }))
       continue
@@ -126,6 +127,7 @@ function buildDingApprovalFlow(input, extraUserNameMap = {}, section = 'current'
         date: record.date,
         remark: record.remark || '',
         images: record.images,
+        attachments: record.attachments,
         statusCode: 2,
       }))
 
@@ -159,6 +161,7 @@ function buildDingApprovalFlow(input, extraUserNameMap = {}, section = 'current'
         date: task?.finishTime || record.date,
         remark: record.remark || '',
         images: record.images,
+        attachments: record.attachments,
         statusCode: getOperationRecordStatusCode(record, task),
       }))
       continue
@@ -233,6 +236,7 @@ function createProcessCcRecordItem(record, userNameMap, section) {
     date: record.date,
     remark: record.remark || '',
     images: record.images,
+    attachments: record.attachments,
     statusCode: 2,
   })
 }
@@ -246,6 +250,7 @@ function createRedirectTaskRecordItem(record, tasks, userNameMap, section) {
     date: record.date,
     remark: record.remark || '',
     images: record.images,
+    attachments: record.attachments,
     statusCode: 2,
   })
 }
@@ -259,6 +264,7 @@ function createRedirectProcessRecordItem(record, tasks, operationRecords, workfl
     date: record.date,
     remark: record.remark || '',
     images: record.images,
+    attachments: record.attachments,
     statusCode: getOperationRecordStatusCode(record),
   })
 }
@@ -322,6 +328,7 @@ function createOperationRecordItem(record, userNameMap, section) {
     date: record.date,
     remark: record.remark || '',
     images: record.images,
+    attachments: record.attachments,
     statusCode: getOperationRecordStatusCode(record),
   })
 }
@@ -1014,7 +1021,7 @@ function shouldShowOperateDate(statusCode) {
   return statusCode !== 0 && statusCode !== 1
 }
 
-function createRecordItem({ section, id, status, displayApprover, date, remark, images, statusCode = 2 }) {
+function createRecordItem({ section, id, status, displayApprover, date, remark, images, attachments, statusCode = 2 }) {
   const showDate = shouldShowOperateDate(statusCode)
 
   return {
@@ -1024,6 +1031,7 @@ function createRecordItem({ section, id, status, displayApprover, date, remark, 
     status: status || '',
     remark: remark || '',
     images: normalizeRecordImages(images),
+    attachments: normalizeRecordAttachments(attachments),
     date: showDate ? (date || '') : '',
     displayDate: showDate ? formatTime(date) : '',
     statusCode,
@@ -1039,6 +1047,11 @@ function normalizeRecordImages(images) {
     .filter(Boolean)
 }
 
+function normalizeRecordAttachments(attachments) {
+  if (!attachments) return []
+  return Array.isArray(attachments) ? attachments : [attachments]
+}
+
 function itemsToTableRows(items) {
   let seq = 0
 
@@ -1049,6 +1062,7 @@ function itemsToTableRows(items) {
     status: item.status || '',
     remark: item.remark || '-',
     images: item.images || [],
+    attachments: item.attachments || [],
   }))
 }
 
