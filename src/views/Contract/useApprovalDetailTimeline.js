@@ -260,7 +260,11 @@ function createRedirectProcessRecordItem(record, userNameMap, section) {
 function formatRedirectTaskDisplay(record, tasks, userNameMap) {
   const operatorName = getName(record.userId, userNameMap, '未识别')
   const targetTask = getRedirectTargetTask(record, tasks)
-  const targetName = targetTask ? getName(targetTask.userId, userNameMap, '未识别') : '未识别'
+  const targetName = getRedirectTargetName(targetTask, userNameMap)
+
+  if (!targetName) {
+    return `${operatorName} 已转交`
+  }
 
   return `${operatorName} 转交 ${targetName}`
 }
@@ -283,6 +287,20 @@ function getRedirectTargetTask(record, tasks) {
   return candidates.find(task => task.status !== 'CANCELED')
     || candidates[0]
     || null
+}
+
+function getRedirectTargetName(task, userNameMap) {
+  const userId = task?.userId
+  if (!userId || isPlaceholderUserId(userId)) return ''
+
+  const name = userNameMap[userId]
+  if (!name || name === userId) return ''
+
+  return name
+}
+
+function isPlaceholderUserId(userId) {
+  return String(userId || '').startsWith('V00_')
 }
 
 function createOperationRecordItem(record, userNameMap, section) {
