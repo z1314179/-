@@ -350,6 +350,10 @@ function renderForecastUnfinishedNodes({
     ? tasks.filter(task => toTime(task.createTime) >= redirectState.redirectTime)
     : tasks
 
+  if (redirectState.targetActivityId === 'sid-startevent') {
+    renderReturnedStartNode(items, forecastTasks, usedTaskIds, userNameMap, section)
+  }
+
   for (const rule of forecastRules) {
     const activityId = rule.activityId
     const hasProcessCcRecord = operationRecords.some(record => {
@@ -399,6 +403,7 @@ function resolveRedirectProcessForecastState({
   return {
     startIndex: getRedirectProcessStartRuleIndex(targetActivityId, workflowForecastNodes, orderedRules),
     redirectTime: toTime(redirectRecord.date),
+    targetActivityId,
   }
 }
 
@@ -423,15 +428,30 @@ function getRedirectProcessTargetName(targetActivityId, operationRecords, workfl
   if (!targetActivityId) return ''
 
   if (targetActivityId === 'sid-startevent') {
-    return getStartProcessRecord(operationRecords)?.showName || ''
+    return '发起人'
   }
 
   const targetRule = (workflowActivityRules || []).find(rule => rule.activityId === targetActivityId)
   return targetRule?.activityName || ''
 }
 
-function getStartProcessRecord(operationRecords) {
-  return (operationRecords || []).find(record => record.type === 'START_PROCESS_INSTANCE')
+function renderReturnedStartNode(items, forecastTasks, usedTaskIds, userNameMap, section) {
+  const startTasks = normalizePendingNodeTasks(forecastTasks.filter(task => {
+    if (task.activityId !== 'sid-startevent') return false
+    if (usedTaskIds.has(task.taskId)) return false
+
+    return ['PAUSED', 'NEW', 'RUNNING'].includes(task.status)
+  }))
+
+  if (startTasks.length === 0) return
+
+  renderGeneratedOriginalNode(items, {
+    activityId: 'sid-startevent',
+    activityName: '发起人',
+    workflowActor: {
+      approvalMethod: '',
+    },
+  }, startTasks, userNameMap, section)
 }
 
 function getRedirectProcessStartRuleIndex(targetActivityId, workflowForecastNodes, orderedRules) {
