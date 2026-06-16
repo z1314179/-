@@ -78,17 +78,14 @@ function buildDingApprovalFlow(input, extraUserNameMap = {}, section = 'current'
   for (const record of operationRecords) {
     if (!isAppendRecord(record)) continue
 
-    const appendTasks = findAppendTasks(record, tasks, usedTaskIds)
+    const appendTasks = findAppendTasks(record, tasks, usedTaskIds, operationRecords)
     const groupTasks = refineAppendGroupTasks(
       { record, tasks: appendTasks },
       operationRecords,
       tasks,
     )
-    const groupTaskIds = new Set(groupTasks.map(task => task.taskId))
 
     for (const task of appendTasks) {
-      if (!groupTaskIds.has(task.taskId)) continue
-
       usedTaskIds.add(task.taskId)
       taskAppendTypeMap.set(task.taskId, record.type)
     }
@@ -124,7 +121,7 @@ function buildDingApprovalFlow(input, extraUserNameMap = {}, section = 'current'
         section,
         id: record.id,
         status: record.showName || '审批人',
-        displayApprover: formatAppendRecordDisplay(record, appendTasks, userNameMap),
+        displayApprover: formatAppendRecordDisplay(record, appendTasks, userNameMap, operationRecords),
         date: record.date,
         remark: record.remark || '',
         statusCode: 2,
@@ -187,13 +184,14 @@ function formatExecuteTaskDisplay(task, appendType, userNameMap) {
   return appendTypeText ? `${appendTypeText}：${displayName}` : displayName
 }
 
-function formatAppendRecordDisplay(record, appendTasks, userNameMap) {
+function formatAppendRecordDisplay(record, appendTasks, userNameMap, operationRecords) {
   const operatorName = getName(record.userId, userNameMap)
   const appendTypeText = getAppendTypeText(record.type)
-  const displayTasks = getDisplayTasks(appendTasks)
+  const displayTasks = getDisplayTasks(appendTasks, record.userId)
+  const fallbackUserId = getNextAppendOperatorUserId(record, operationRecords)
   const appendNames = displayTasks.length > 0
     ? displayTasks.map(task => getName(task.userId, userNameMap)).join('、')
-    : '未识别'
+    : getName(fallbackUserId, userNameMap, '未识别')
 
   return `${operatorName} ${appendTypeText}：${appendNames}`
 }
@@ -386,12 +384,30 @@ function formatTaskUsersWithResult(tasks, userNameMap, method) {
   return `${displayNames} ${getApprovalMethodText(method)}`
 }
 
-function getDisplayTasks(tasks) {
-  return (tasks || []).filter(task => !isCanceledPlaceholderTask(task))
+function getDisplayTasks(tasks, excludeUserId = '') {
+  return (tasks || []).filter(task => {
+    if (isCanceledPlaceholderTask(task)) return false
+    if (excludeUserId && task.userId === excludeUserId) return false
+
+    return true
+  })
 }
 
 function isCanceledPlaceholderTask(task) {
   return task?.status === 'CANCELED' && String(task.userId || '').startsWith('V00_')
+}
+
+function getNextAppendOperatorUserId(record, operationRecords) {
+  const recordTime = toTime(record.date)
+  const nextAppendRecord = (operationRecords || [])
+    .filter(item => {
+      if (!isAppendRecord(item)) return false
+      if (item.activityId !== record.activityId) return false
+      return toTime(item.date) > recordTime
+    })
+    .sort((a, b) => toTime(a.date) - toTime(b.date))[0]
+
+  return nextAppendRecord?.userId || ''
 }
 
 function getRulesByForecastOrder(workflowForecastNodes, workflowActivityRules) {
@@ -411,18 +427,28 @@ function getRulesByForecastOrder(workflowForecastNodes, workflowActivityRules) {
     })
 }
 
-function findAppendTasks(record, tasks, usedTaskIds) {
+function findAppendTasks(record, tasks, usedTaskIds, operationRecords = []) {
   const recordTime = toTime(record.date)
+  const upperRecord = getNextSameActivityRecord(record, operationRecords)
+  const upperTime = toTime(upperRecord?.date)
 
   const candidates = tasks.filter(task => {
     if (usedTaskIds.has(task.taskId)) return false
     if (task.activityId !== record.activityId) return false
-    if (toTime(task.createTime) < recordTime) return false
+    const createTime = toTime(task.createTime)
+    if (createTime < recordTime) return false
+    if (upperTime && isAppendRecord(upperRecord) && createTime >= upperTime) return false
+    if (upperTime && !isAppendRecord(upperRecord) && createTime > upperTime) return false
 
     return true
   })
 
   if (candidates.length === 0) return []
+
+  const realCandidates = dedupeUserTasks(candidates.filter(task => {
+    return ['COMPLETED', 'RUNNING', 'CANCELED'].includes(task.status)
+  }))
+  if (realCandidates.length > 0) return realCandidates
 
   const groupMap = new Map()
 
@@ -462,6 +488,18 @@ function findAppendTasks(record, tasks, usedTaskIds) {
   }
 
   return []
+}
+
+function getNextSameActivityRecord(record, operationRecords) {
+  const recordTime = toTime(record.date)
+
+  return (operationRecords || [])
+    .filter(item => {
+      if (item === record) return false
+      if (item.activityId !== record.activityId) return false
+      return toTime(item.date) > recordTime
+    })
+    .sort((a, b) => toTime(a.date) - toTime(b.date))[0]
 }
 
 function dedupeUserTasks(tasks) {
@@ -550,7 +588,10 @@ function refineAppendGroupTasks(relation, operationRecords, tasks) {
   })
 
   if (hasAgreed) {
-    return appendTasks.filter(task => task.status !== 'RUNNING')
+    return appendTasks.filter(task => {
+      if (task.status !== 'RUNNING') return true
+      return task.userId !== relation.record.userId
+    })
   }
 
   const record = relation.record
