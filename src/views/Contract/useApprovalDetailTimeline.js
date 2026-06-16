@@ -244,7 +244,6 @@ function renderForecastUnfinishedNodes({
     const nodeTasks = normalizePendingNodeTasks(tasks.filter(task => {
       if (task.activityId !== activityId) return false
       if (usedTaskIds.has(task.taskId)) return false
-      if (hasExecutedRecordForTask(task, operationRecords)) return false
 
       return ['PAUSED', 'NEW', 'RUNNING'].includes(task.status)
     }))
@@ -423,16 +422,6 @@ function getNextAppendOperatorUserId(record, operationRecords) {
     .sort((a, b) => toTime(a.date) - toTime(b.date))[0]
 
   return nextAppendRecord?.userId || ''
-}
-
-function hasExecutedRecordForTask(task, operationRecords) {
-  return (operationRecords || []).some(record => {
-    if (record.type !== 'EXECUTE_TASK_NORMAL') return false
-    if (record.activityId !== task.activityId) return false
-    if (record.userId !== task.userId) return false
-
-    return toTime(task.createTime) <= toTime(record.date)
-  })
 }
 
 function getRulesByForecastOrder(workflowForecastNodes, workflowActivityRules) {
@@ -614,8 +603,7 @@ function refineAppendGroupTasks(relation, operationRecords, tasks) {
 
   if (hasAgreed) {
     return appendTasks.filter(task => {
-      if (task.status !== 'RUNNING') return true
-      return task.userId !== relation.record.userId
+      return task.status !== 'RUNNING'
     })
   }
 
@@ -640,32 +628,39 @@ function refineAppendGroupTasks(relation, operationRecords, tasks) {
 }
 
 function shouldRenderAppendGroup(relation) {
-  const tasks = relation.groupTasks || relation.tasks || []
+  const tasks = relation.tasks || []
   if (tasks.length === 0) return false
 
-  return getDisplayTasks(tasks, relation.record.userId).some(task => {
+  return getDisplayTasks(tasks).some(task => {
     return ['RUNNING', 'NEW', 'PAUSED'].includes(task.status)
   })
 }
 
 function renderAppendGroup(items, relation, userNameMap, section) {
-  const tasks = relation.groupTasks || relation.tasks || []
+  const tasks = getAppendPendingTasks(relation.tasks)
   const status = relation.record.showName || '审批人'
   const appendTypeText = getAppendTypeText(relation.record.type)
 
-  const displayTasks = getDisplayTasks(tasks, relation.record.userId)
+  const displayTasks = getDisplayTasks(tasks)
   const statusCode = resolveAppendGroupStatusCode(displayTasks)
-  const displayApprover = `${appendTypeText}：${formatAppendGroupUsers(displayTasks, userNameMap, 'OR', statusCode)}`
+  const displayApprover = `${appendTypeText}：${formatAppendGroupUsers(displayTasks, userNameMap, 'ALL', statusCode)}`
 
   items.push(createRecordItem({
     section,
     id: `append-${relation.record.id || relation.record.activityId}`,
     status,
     displayApprover,
-    date: getAppendGroupOperateDate(tasks, statusCode),
+    date: getAppendGroupOperateDate(displayTasks, statusCode),
     remark: '',
     statusCode,
   }))
+}
+
+function getAppendPendingTasks(tasks) {
+  const runningTasks = (tasks || []).filter(task => task.status === 'RUNNING')
+  if (runningTasks.length > 0) return runningTasks
+
+  return (tasks || []).filter(task => ['NEW', 'PAUSED'].includes(task.status))
 }
 
 function findExecuteTask(record, tasks) {
