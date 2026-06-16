@@ -243,12 +243,12 @@ function renderForecastUnfinishedNodes({
       continue
     }
 
-    const nodeTasks = tasks.filter(task => {
+    const nodeTasks = normalizePendingNodeTasks(tasks.filter(task => {
       if (task.activityId !== activityId) return false
       if (usedTaskIds.has(task.taskId)) return false
 
       return ['PAUSED', 'NEW', 'RUNNING'].includes(task.status)
-    })
+    }))
 
     if (nodeTasks.length > 0) {
       renderGeneratedOriginalNode(items, rule, nodeTasks, userNameMap, section)
@@ -482,6 +482,48 @@ function dedupeUserTasks(tasks) {
 
   return Array.from(map.values())
     .sort((a, b) => Number(a.taskId || 0) - Number(b.taskId || 0))
+}
+
+function normalizePendingNodeTasks(tasks) {
+  const runningTasks = (tasks || []).filter(task => task.status === 'RUNNING')
+  if (runningTasks.length > 0) return dedupePendingTasks(runningTasks)
+
+  return dedupePendingTasks(tasks)
+}
+
+function dedupePendingTasks(tasks) {
+  const map = new Map()
+
+  for (const task of tasks || []) {
+    const old = map.get(task.userId)
+    if (!old || comparePendingTask(task, old) < 0) {
+      map.set(task.userId, task)
+    }
+  }
+
+  return Array.from(map.values())
+    .sort((a, b) => {
+      return toTime(a.createTime) - toTime(b.createTime)
+        || Number(a.taskId || 0) - Number(b.taskId || 0)
+    })
+}
+
+function comparePendingTask(a, b) {
+  const priorityDiff = getPendingTaskPriority(a) - getPendingTaskPriority(b)
+  if (priorityDiff !== 0) return priorityDiff
+
+  return toTime(b.createTime) - toTime(a.createTime)
+    || Number(b.taskId || 0) - Number(a.taskId || 0)
+}
+
+function getPendingTaskPriority(task) {
+  const map = {
+    RUNNING: 1,
+    NEW: 2,
+    PAUSED: 3,
+  }
+
+  return map[task.status] || 99
 }
 
 function getTaskPriority(task) {
